@@ -50,14 +50,9 @@ var loginIOS = React.createClass({
         this.setState({
           logging:0
         });
-        this.props.show();
-        this.props.navigator.resetTo({
-          title: 'Main',
-          component: Main,
-          passProps:{
-            show:this.props.show,
-            hide:this.props.hide
-          }
+        this.props.navigator.push({
+          name: 'Main',
+          id: 1,
         });
     }
     //login failed -1

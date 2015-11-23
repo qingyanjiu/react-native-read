@@ -11,17 +11,20 @@ var {
   PixelRatio,
   View,
   TouchableHighlight,
-  NavigatorIOS,
   Text
 } = React;
 
 
 var Ma = React.createClass({
 
+  onClickHandler:function(){   
+      this.props.navigator.pop();
+  },
   render: function() {
    return (
         <View style={styles.container}>
-          <Text style={{flex:1}}> 1ghghghggh</Text>
+          <Text style={{flex:1}}> Ma!!!</Text>
+          <TouchableHighlight underlayColor='#99d9f4' onPress={this.onClickHandler.bind(this)} style={styles.button}><Text style={{color:'white'}}>闪</Text></TouchableHighlight>
         </View>      
       );
     }
@@ -30,7 +33,7 @@ var Ma = React.createClass({
 
 var styles = StyleSheet.create({
   container:{
-    paddingTop:100,
+    padding:30,
     flex:1,
     justifyContent:'center',
     alignItems:'center'

@@ -9,6 +9,8 @@ var React = require('react-native');
 var Dimensions = require('Dimensions');
 
 var Login = require('./loginIOS');
+var Main = require('./Main');
+var Ma = require('./Ma');
 
 
 var {
@@ -18,11 +20,30 @@ var {
   Text,
   TouchableHighlight,
   PixelRatio,
-  NavigatorIOS,
+  Navigator,
   View,
 } = React;
 
 var app = React.createClass({
+
+  _renderScene:function(router, navigator){
+      var Component = null;this._navigator = navigator;
+      switch(router.id){
+        case 0:
+          Component = Login;
+          break;
+        case 1:
+          Component = Main;
+          break;
+        case 2:
+          Component = Ma;
+          break;
+        default: //default view
+          Component = Main;
+      }
+      return <Component navigator={navigator} />
+  },
+
   getInitialState : function(){
     return{
       isNavBarHidden: true
@@ -41,25 +62,9 @@ var app = React.createClass({
   },
   render() {
     return (
-      <NavigatorIOS ref="nav"
-        navigationBarHidden={this.state.isNavBarHidden}
-        style={styles.title}
-        tintColor='#48BBEC'
-        barTintColor='##FFFFFF'
-        titleTextColor='#000000'
-       // itemWrapperStyle={{
-       // }}
-
-        initialRoute={{
-          title: '',
-          component: Login,
-//rightButtonTitle:'right',
-          //将显示或隐藏navibar的方法作为参数传递给子节点来调用
-          passProps:{
-            show:this.show,
-            hide:this.hide,
-          }
-        }}/>
+      <Navigator
+        initialRoute={{name: 'index', index: 0,id:0}}
+        renderScene={this._renderScene} />
     );
   }
 });

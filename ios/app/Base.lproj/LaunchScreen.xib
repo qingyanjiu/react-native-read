@@ -18,7 +18,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="SRh-05-sjZ">
-                    <rect key="frame" x="-10" y="110" width="500" height="250"/>
+                    <rect key="frame" x="-85" y="111" width="500" height="250"/>
                 </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -29,7 +29,7 @@
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="548" y="428"/>
+            <point key="canvasLocation" x="695" y="402"/>
         </view>
     </objects>
     <resources>

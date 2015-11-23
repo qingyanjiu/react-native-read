@@ -13,31 +13,24 @@ var {
   PixelRatio,
   View,
   TouchableHighlight,
-  NavigatorIOS,
   Text
 } = React;
 
 
 var Main = React.createClass({
-  onLoginHandler:function(){   
-    this.props.show();
-        this.props.navigator.push({
-          title: 'Ma',
-          component: Main,
-          passProps:{
-            show:this.props.show,
-            hide:this.props.hide
-          }
-        });
-    
+
+  onClickHandler:function(){   
+      this.props.navigator.push({
+        name: 'Ma',
+        id: 2,});
   },
 
 
   render: function() {
    return (
         <View style={styles.container}>
-          <Text style={{flex:1}}> 1ghghghggh</Text>
-          <TouchableHighlight underlayColor='#99d9f4' onPress={this.onLoginHandler.bind(this)} style={styles.button}><Text style={{color:'white'}}>跳</Text></TouchableHighlight>
+          <Text style={{flex:1}}> Main!</Text>
+          <TouchableHighlight underlayColor='#99d9f4' onPress={this.onClickHandler.bind(this)} style={styles.button}><Text style={{color:'white'}}>跳</Text></TouchableHighlight>
         </View>      
       );
     }
@@ -46,7 +39,7 @@ var Main = React.createClass({
 
 var styles = StyleSheet.create({
   container:{
-    paddingTop:100,
+    padding:30,
     flex:1,
     justifyContent:'center',
     alignItems:'center'

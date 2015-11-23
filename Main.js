@@ -29,7 +29,7 @@ var Main = React.createClass({
   render: function() {
    return (
         <View style={styles.container}>
-          <Text style={{flex:1}}> Main!</Text>
+          <Text style={{flex:1}}> {this.props.router.passProps.title}</Text>
           <TouchableHighlight underlayColor='#99d9f4' onPress={this.onClickHandler.bind(this)} style={styles.button}><Text style={{color:'white'}}>跳</Text></TouchableHighlight>
         </View>      
       );

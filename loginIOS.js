@@ -53,6 +53,9 @@ var loginIOS = React.createClass({
         this.props.navigator.push({
           name: 'Main',
           id: 1,
+          passProps:{
+            title:'passTitle',
+          },
         });
     }
     //login failed -1

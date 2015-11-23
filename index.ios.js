@@ -27,7 +27,8 @@ var {
 var app = React.createClass({
 
   _renderScene:function(router, navigator){
-      var Component = null;this._navigator = navigator;
+      var Component = null;
+      this._navigator = navigator;
       switch(router.id){
         case 0:
           Component = Login;
@@ -41,7 +42,7 @@ var app = React.createClass({
         default: //default view
           Component = Main;
       }
-      return <Component navigator={navigator} />
+      return <Component navigator={navigator} router={router}  {...router.passProps}/>
   },
 
   getInitialState : function(){

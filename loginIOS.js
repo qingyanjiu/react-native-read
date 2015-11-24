@@ -50,7 +50,7 @@ var loginIOS = React.createClass({
         this.setState({
           logging:0
         });
-        this.props.navigator.push({
+        this.props.navigator.replace({
           name: 'Main',
           id: 1,
           passProps:{

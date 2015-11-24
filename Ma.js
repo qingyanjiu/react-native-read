@@ -33,6 +33,7 @@ var Ma = React.createClass({
 
 var styles = StyleSheet.create({
   container:{
+    backgroundColor:'48BBEC',
     padding:30,
     flex:1,
     justifyContent:'center',

@@ -14,11 +14,16 @@ var {
   PixelRatio,
   View,
   TouchableHighlight,
-  Text
+  Text,
+  StatusBarIOS
 } = React;
 
 
 var Main = React.createClass({
+  componentDidMount:function(){
+    StatusBarIOS.setStyle(1);
+  },
+
   getInitialState:function(){
     return({
       id:'',
@@ -28,12 +33,13 @@ var Main = React.createClass({
   onMenuClickCallBack:function(args){
     alert(
       args.id
-    );     
-    if(args.id=='0'){
-      this.props.navigator.push({
-          name: 'Ma',
-          id: 2,});
-    }
+    );
+
+    // if(args.id=='0'){
+    //   this.props.navigator.push({
+    //       name: 'Ma',
+    //       id: 2,});
+    // }
   },
 
   onClickHandler:function(){   
@@ -60,11 +66,23 @@ var Main = React.createClass({
       tweenHandler={(ratio) => {
         return {
           drawer: { shadowRadius: Math.min(ratio*5*5, 5) },
-          main: { opacity:(2-ratio)/2 },
+          main: { opacity:1.0 },
         }
       }}
 
       //写入回调方法,从子组件回调方法中获取的入参名字为‘id’，将它作为参数传递给方法onMenuClickCallBack
+      //
+      // 从子页面传递来的参数，见MenuItem.js中的       //   这里是要传递到本页面处理函数onMenuClickCallBack的参数,
+      // <TouchableOpacity style={styles.menuItem} //   这里传递的是一个对象，对象名随意，在onMenuClickCallBack
+      // onPress= {() => this.props.callBack       //   函数中用args来代替了，取其中id的值就是args.id。如果只需要传递
+      // (this.props.id)}>                         //   一个值的话，写成=> {this.onMenuClickCallBack(id)}}/>}
+      // 这里是一个，如果是对象的话传递时会采取：        //   就可以了，在onMenuClickCallBack函数中，args的值就是传递的
+      // <TouchableOpacity style={styles.menuItem} //   id的值。
+      // onPress= {() => this.props.callBack       //               ||
+      // ({id:id,name:name,...})}>的形式，          //               ||
+      // 取值时就应该写<Menu callBack={(params.id)=> //               ||
+      //                        ||                                  ||
+      //                        ||                                  ||
       content={<Menu callBack={(id) => {this.onMenuClickCallBack({id:id})}}/>}
       >
         <View style={ styles.header }>
@@ -84,7 +102,8 @@ var styles = StyleSheet.create({
     padding:30,
     flex:1,
     justifyContent:'center',
-    alignItems:'center'
+    alignItems:'center',
+    backgroundColor:'#0085C4',
   },
   button: {
     height:20*PixelRatio.get(),
@@ -99,9 +118,9 @@ var styles = StyleSheet.create({
   },
   header: {
     height: 60,
-    backgroundColor: '#EEEEEE',
+    backgroundColor: '#005dd5',
     borderBottomWidth:1,
-    borderBottomColor:'#CCCCCC'
+    borderBottomColor:'#00aaaaaa',
   }
 });
 

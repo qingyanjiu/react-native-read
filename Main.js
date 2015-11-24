@@ -26,7 +26,8 @@ var Main = React.createClass({
 
   getInitialState:function(){
     return({
-      id:'',
+      //已选择的菜单id
+      menuSelectedId:'1',
     });
   },
 
@@ -34,6 +35,7 @@ var Main = React.createClass({
     alert(
       args.id
     );
+
 
     // if(args.id=='0'){
     //   this.props.navigator.push({
@@ -83,7 +85,7 @@ var Main = React.createClass({
       // 取值时就应该写<Menu callBack={(params.id)=> //               ||
       //                        ||                                  ||
       //                        ||                                  ||
-      content={<Menu callBack={(id) => {this.onMenuClickCallBack({id:id})}}/>}
+      content={<Menu callBack={(id) => {this.onMenuClickCallBack({id:id})}} selectId={this.state.menuSelectedId}/>}
       >
         <View style={ styles.header }>
         </View>

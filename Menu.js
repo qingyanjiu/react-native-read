@@ -25,13 +25,14 @@ var Menu = React.createClass({
     var teamSource = require('./img/ic_drawer_explore.png');
     var taskSource = require('./img/ic_drawer_follow.png');
     var signSource = require('./img/ic_drawer_collect.png');
+
     return (
       <View>
         <View style={ styles.header }>
         </View>
         <View style={styles.container}>
-          <MenuItem imgSource={nameSource} text='我' id='0' {...this.props}/>
-          <MenuItem imgSource={mainPageSource} text='主页' id='1' {...this.props}/>
+          <MenuItem imgSource={nameSource} text='我' id='0' {...this.props} />
+          <MenuItem imgSource={mainPageSource} text='主页' id='1' {...this.props} />
           <MenuItem imgSource={teamSource} text='团队' id='2' {...this.props}/>
           <MenuItem imgSource={taskSource} text='任务' id='3' {...this.props}/>
           <MenuItem imgSource={signSource} text='签到' id='4' {...this.props}/>

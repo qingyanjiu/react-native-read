@@ -30,6 +30,13 @@ var loginIOS = React.createClass({
       logging: 1
     });
 
+    // this.props.navigator.replace({
+    //       name: 'Main',
+    //       id: 1,
+    //       passProps:{
+    //         title:'passTitle',
+    //       },
+    //     });
 
     fetch('http://134.65.16.184:8000/userservice/session/login_user/test/111111')
       .then((response) => response.json())
@@ -42,7 +49,7 @@ var loginIOS = React.createClass({
     
   },
 
-//登陆有返回的操作
+  //登陆有返回的操作
   _loginHandler:function(json){
     console.log(json);
     //登陆成功 1

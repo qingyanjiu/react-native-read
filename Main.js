@@ -5,6 +5,7 @@ var Dimensions = require('Dimensions');
 var Drawer = require('react-native-drawer')
 
 var Menu = require('./Menu');
+var Sign = require('./Sign');
 
 
 var {
@@ -26,8 +27,8 @@ var Main = React.createClass({
 
   getInitialState:function(){
     return({
-      //已选择的菜单id
-      menuSelectedId:'1',
+      //已选择的菜单id,判断是否存在，如果不存在 说明是第一次进来，设置为1
+      menuSelectedId:this.props.router.passProps.menuSelectedId ? this.props.router.passProps.menuSelectedId:'1',
     });
   },
 
@@ -36,12 +37,14 @@ var Main = React.createClass({
       args.id
     );
 
-
-    // if(args.id=='0'){
-    //   this.props.navigator.push({
-    //       name: 'Ma',
-    //       id: 2,});
-    // }
+    this.props.navigator.replace({
+      name: 'Main',
+      id: 1,          
+      //跳转到main页面（routeid为1） 然后传递最新点击的菜单id过去选中，同时菜单id也决定页面中显示内容的不同 render方法中做判断
+      passProps:{
+        menuSelectedId:args.id
+      },
+    });
   },
 
   onClickHandler:function(){   
@@ -52,6 +55,20 @@ var Main = React.createClass({
 
 
   render: function() {
+    var content;
+    if(this.state.menuSelectedId==='1')
+      content = 
+      <View style={{flex:1}}> 
+        <View style={ styles.header }>
+        </View>
+        <View style={styles.container}>
+          <Text style={{flex:1}}> {this.props.router.passProps.title}</Text>
+          <TouchableHighlight underlayColor='#99d9f4' onPress={this.onClickHandler.bind(this)} style={styles.button}><Text style={{color:'white'}}>跳</Text></TouchableHighlight>
+        </View>
+        </View>
+    else
+      content = <Sign />
+
    return (
     <Drawer
       type="overlay"
@@ -87,12 +104,7 @@ var Main = React.createClass({
       //                        ||                                  ||
       content={<Menu callBack={(id) => {this.onMenuClickCallBack({id:id})}} selectId={this.state.menuSelectedId}/>}
       >
-        <View style={ styles.header }>
-        </View>
-        <View style={styles.container}>
-          <Text style={{flex:1}}> {this.props.router.passProps.title}</Text>
-          <TouchableHighlight underlayColor='#99d9f4' onPress={this.onClickHandler.bind(this)} style={styles.button}><Text style={{color:'white'}}>跳</Text></TouchableHighlight>
-        </View>
+      {content}  
     </Drawer>           
       );
     }

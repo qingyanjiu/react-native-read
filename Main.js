@@ -15,8 +15,10 @@ var {
   PixelRatio,
   View,
   TouchableHighlight,
+  TouchableOpacity,
   Text,
-  StatusBarIOS
+  StatusBarIOS,
+  Modal
 } = React;
 
 
@@ -29,6 +31,7 @@ var Main = React.createClass({
     return({
       //已选择的菜单id,判断是否存在，如果不存在 说明是第一次进来，设置为1
       menuSelectedId:this.props.router.passProps.menuSelectedId ? this.props.router.passProps.menuSelectedId:'1',
+      modalShow:false,
     });
   },
 
@@ -53,6 +56,17 @@ var Main = React.createClass({
         id: 2,});
   },
 
+  _openModalMenu:function(){
+    this.setState({
+      modalShow:true,
+    });
+  },
+
+  _closeModalMenu:function(){
+    this.setState({
+      modalShow:false,
+    });
+  },
 
   render: function() {
     var content;
@@ -60,8 +74,43 @@ var Main = React.createClass({
       content = 
       <View style={{flex:1}}> 
         <View style={ styles.header }>
+          <View style={styles.headerLeftMenu}>
+            <TouchableOpacity><Image style={styles.headerImg}
+              source={require('./img/exit.png')}/>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.headerRightMenu}>
+            <TouchableOpacity><Image style={[styles.headerImg,{marginRight:10}]}
+              source={require('./img/chart.png')}/>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={this._openModalMenu}><Image style={styles.headerImg}
+              source={require('./img/menu.png')}/>
+            </TouchableOpacity>
+          </View>
         </View>
+
         <View style={styles.container}>
+
+          <Modal
+            animated={true}
+            transparent={true}
+            visible={this.state.modalShow}>
+            <View style={styles.modalContainer}>
+              <View style={styles.modalMenu}>
+                <TouchableOpacity style={styles.modalMenuItem}>
+                  <Text>关闭广告</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.modalMenuItem}>
+                  <Text>    设置    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={this._closeModalMenu} style={[styles.modalMenuItem,{borderBottomWidth:0}]}>
+                  <Text>取消</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+
           <Text style={{flex:1}}> {this.props.router.passProps.title}</Text>
           <TouchableHighlight underlayColor='#99d9f4' onPress={this.onClickHandler.bind(this)} style={styles.button}><Text style={{color:'white'}}>跳</Text></TouchableHighlight>
         </View>
@@ -135,7 +184,44 @@ var styles = StyleSheet.create({
     backgroundColor: '#005dd5',
     borderBottomWidth:1,
     borderBottomColor:'#00aaaaaa',
-  }
+    flexDirection:'row',
+  },
+  headerLeftMenu:{
+    flex:1,
+    justifyContent:'flex-start',
+    paddingTop:16,
+    paddingLeft:6,
+  },
+  headerRightMenu:{
+    flex:1,
+    flexDirection:'row',
+    justifyContent:'flex-end',
+    paddingTop:16,
+    paddingRight:6,
+  },
+  headerImg:{
+    width:40,
+    height:40,
+  },
+  modalContainer:{
+    flex:1,
+    flexDirection:'row',
+    justifyContent:'flex-end',
+  },
+  modalMenu:{
+    alignItems:'center',
+    justifyContent:'center',
+    width:70,
+    height:140,
+    marginTop:60,
+    backgroundColor:'#FFFFFF',
+  },
+  modalMenuItem:{
+    flex:1,
+    justifyContent:'center',
+    borderBottomColor:'#dddddd',
+    borderBottomWidth:1,
+  },
 });
 
 module.exports = Main;

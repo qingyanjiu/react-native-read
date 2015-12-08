@@ -13,12 +13,12 @@ var {
 } = React;
 
 
-var Sign = React.createClass({
+var Anim = React.createClass({
   mixins: [tweenState.Mixin],
 
   getInitialState:function(){   
       return({
-        r:100,
+        r:60,
         opacity:1,
       });
   },
@@ -26,14 +26,14 @@ var Sign = React.createClass({
   animationShow:function(){
     this.tweenState('opacity', {
         easing: tweenState.easingTypes.easeOutQuint,
-        duration: 2000,
+        duration: 3000,
         endValue: 0,
-        onEnd:this.setState({r:100,opacity:1})
+        onEnd:this.setState({r:60,opacity:1})
       });
       this.tweenState('r', {
         easing: tweenState.easingTypes.easeOutQuint,
         duration: 2000,
-        endValue: Dimensions.get('window').width+20,
+        endValue: Dimensions.get('window').width,
         onEnd:this.animationShow,
       });
   },
@@ -68,4 +68,5 @@ var styles = StyleSheet.create({
   }
 });
 
-module.exports = Sign;
+
+module.exports = Anim;

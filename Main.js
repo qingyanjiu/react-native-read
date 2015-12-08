@@ -56,12 +56,13 @@ var Main = React.createClass({
         id: 2,});
   },
 
+  //显示下拉菜单
   _openModalMenu:function(){
     this.setState({
       modalShow:true,
     });
   },
-
+  //隐藏下拉菜单
   _closeModalMenu:function(){
     this.setState({
       modalShow:false,
@@ -70,9 +71,12 @@ var Main = React.createClass({
 
   render: function() {
     var content;
+    //默认显示的内容
     if(this.state.menuSelectedId==='1')
+      //头部菜单,//点击右边头部菜单 弹出的下拉菜单
       content = 
       <View style={{flex:1}}> 
+      
         <View style={ styles.header }>
           <View style={styles.headerLeftMenu}>
             <TouchableOpacity><Image style={styles.headerImg}
@@ -89,9 +93,9 @@ var Main = React.createClass({
             </TouchableOpacity>
           </View>
         </View>
-
+        
         <View style={styles.container}>
-
+          
           <Modal
             animated={true}
             transparent={true}

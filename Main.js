@@ -6,6 +6,7 @@ var Drawer = require('react-native-drawer')
 
 var Menu = require('./Menu');
 var Sign = require('./Sign');
+var MainCircle = require('./MainCircle');
 
 
 var {
@@ -115,12 +116,17 @@ var Main = React.createClass({
             </View>
           </Modal>
 
-          <Text style={{flex:1}}> {this.props.router.passProps.title}</Text>
-          <TouchableHighlight underlayColor='#99d9f4' onPress={this.onClickHandler.bind(this)} style={styles.button}><Text style={{color:'white'}}>跳</Text></TouchableHighlight>
+          <MainCircle/>
+
         </View>
         </View>
-    else
+    else if(this.state.menuSelectedId==='2')
       content = <Sign />
+    else if(this.state.menuSelectedId==='3')
+      content = <MainCircle />
+
+              // <Text style={{flex:1}}> {this.props.router.passProps.title}</Text>
+          // <TouchableHighlight underlayColor='#99d9f4' onPress={this.onClickHandler.bind(this)} style={styles.button}><Text style={{color:'white'}}>跳</Text></TouchableHighlight>
 
    return (
     <Drawer
@@ -166,10 +172,7 @@ var Main = React.createClass({
 
 var styles = StyleSheet.create({
   container:{
-    padding:30,
     flex:1,
-    justifyContent:'center',
-    alignItems:'center',
     backgroundColor:'#0085C4',
   },
   button: {

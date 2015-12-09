@@ -13,7 +13,7 @@ var {
 } = React;
 
 
-var Anim = React.createClass({
+var MainCirlce = React.createClass({
   mixins: [tweenState.Mixin],
 
   getInitialState:function(){   
@@ -21,7 +21,7 @@ var Anim = React.createClass({
         //整个圆环圆心相对于左上角x坐标
         circlePointX:Dimensions.get('window').width/2,
         //整个圆环圆心相对于左上角Y坐标
-        circlePointY:Dimensions.get('window').height/2,
+        circlePointY:Dimensions.get('window').height/2 -30,
         //整个圆环半径
         circleRadius:Dimensions.get('window').width/2,
         //中心圆环半径
@@ -157,4 +157,4 @@ var styles = StyleSheet.create({
 });
 
 
-module.exports = Anim;
+module.exports = MainCirlce;

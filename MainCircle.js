@@ -5,9 +5,10 @@ var TimerMixin = require('react-timer-mixin');
 var tweenState = require('react-tween-state');
 var Dimensions = require('Dimensions');
 
+var MainCircleItem = require('./MainCircleItem');
+
 
 var {
-  AppRegistry,
   StyleSheet,
   View,
 } = React;
@@ -29,7 +30,7 @@ var MainCirlce = React.createClass({
         //小圆圈数量
         suroundCircleNumber:8,
         //小圆圈离最外延的距离
-        suroundCirclePaddingOut:30,
+        suroundCirclePaddingOut:26,
         //小圆圈半径
         suroundCircleRaduis:30,
       });
@@ -41,6 +42,29 @@ var MainCirlce = React.createClass({
           // </View>
 
   render: function() {
+    var images = ["http://i1.tietuku.com/c5ac715bbaca4c87.png",
+            "http://i1.tietuku.com/9f7069f1f1dcb4e0.png",
+            "http://i2.tietuku.com/f2797d9c742c8a9a.png",
+            "http://i2.tietuku.com/7c9668c12da43638.png",
+            "http://i1.tietuku.com/e0aff458ab448a63.png",
+            "http://i1.tietuku.com/a42209775fdf1a1b.png",
+            "http://i1.tietuku.com/4ed54b20418e0752.png",
+            "http://i1.tietuku.com/9a775127243030cd.png"];
+
+    var items = [];
+    for(var i=0;i<this.state.suroundCircleNumber;i++){
+      items.push(
+        <MainCircleItem 
+          top={this.state.circlePointY - Math.cos((2*Math.PI /360) * 360/this.state.suroundCircleNumber *i) * (this.state.circleRadius - this.state.suroundCircleRaduis - this.state.suroundCirclePaddingOut) - this.state.suroundCircleRaduis}
+          left={Math.sin((2*Math.PI / 360) * 360/this.state.suroundCircleNumber*i) * (this.state.circleRadius - this.state.suroundCircleRaduis - this.state.suroundCirclePaddingOut) + this.state.circlePointX - this.state.suroundCircleRaduis} 
+          raduis={this.state.suroundCircleRaduis} 
+          paddingOut={this.state.suroundCirclePaddingOut} 
+          image={images[i]}
+        >
+        </MainCircleItem>
+        );
+    }
+
    return (
         <View style={styles.container}>
           <View style={styles.circle}>
@@ -56,80 +80,7 @@ var MainCirlce = React.createClass({
           }}>
           </View>
 
-
-          <View style={{backgroundColor:'white',
-            height:this.state.suroundCircleRaduis*2,
-            width:this.state.suroundCircleRaduis*2,
-            borderRadius:this.state.suroundCircleRaduis,
-            position: 'absolute',
-            top: this.state.circlePointY - Math.cos((2*Math.PI /360) * 0) * (this.state.circleRadius - this.state.suroundCircleRaduis - this.state.suroundCirclePaddingOut) - this.state.suroundCircleRaduis ,
-            left:Math.sin((2*Math.PI / 360) * 0) * (this.state.circleRadius - this.state.suroundCircleRaduis - this.state.suroundCirclePaddingOut) + this.state.circlePointX - this.state.suroundCircleRaduis }}>
-          </View>
-
-          <View style={{backgroundColor:'white',
-            height:this.state.suroundCircleRaduis*2,
-            width:this.state.suroundCircleRaduis*2,
-            borderRadius:this.state.suroundCircleRaduis,
-            position: 'absolute',
-            top: this.state.circlePointY - Math.cos((2*Math.PI /360) * 45) * (this.state.circleRadius - this.state.suroundCircleRaduis - this.state.suroundCirclePaddingOut) - this.state.suroundCircleRaduis ,
-            left:Math.sin((2*Math.PI / 360) * 45) * (this.state.circleRadius - this.state.suroundCircleRaduis - this.state.suroundCirclePaddingOut) + this.state.circlePointX - this.state.suroundCircleRaduis }}>
-          </View>
-
-          <View style={{backgroundColor:'white',
-            height:this.state.suroundCircleRaduis*2,
-            width:this.state.suroundCircleRaduis*2,
-            borderRadius:this.state.suroundCircleRaduis,
-            position: 'absolute',
-            top: this.state.circlePointY - Math.cos((2*Math.PI /360) * 90) * (this.state.circleRadius - this.state.suroundCircleRaduis - this.state.suroundCirclePaddingOut) - this.state.suroundCircleRaduis ,
-            left:Math.sin((2*Math.PI / 360) * 90) * (this.state.circleRadius - this.state.suroundCircleRaduis - this.state.suroundCirclePaddingOut) + this.state.circlePointX - this.state.suroundCircleRaduis }}>
-          </View>
-
-          <View style={{backgroundColor:'white',
-            height:this.state.suroundCircleRaduis*2,
-            width:this.state.suroundCircleRaduis*2,
-            borderRadius:this.state.suroundCircleRaduis,
-            position: 'absolute',
-            top: this.state.circlePointY - Math.cos((2*Math.PI /360) * 135) * (this.state.circleRadius - this.state.suroundCircleRaduis - this.state.suroundCirclePaddingOut) - this.state.suroundCircleRaduis ,
-            left:Math.sin((2*Math.PI / 360) * 135) * (this.state.circleRadius - this.state.suroundCircleRaduis - this.state.suroundCirclePaddingOut) + this.state.circlePointX - this.state.suroundCircleRaduis }}>
-          </View>
-
-          <View style={{backgroundColor:'white',
-            height:this.state.suroundCircleRaduis*2,
-            width:this.state.suroundCircleRaduis*2,
-            borderRadius:this.state.suroundCircleRaduis,
-            position: 'absolute',
-            top: this.state.circlePointY - Math.cos((2*Math.PI /360) * 180) * (this.state.circleRadius - this.state.suroundCircleRaduis - this.state.suroundCirclePaddingOut) - this.state.suroundCircleRaduis ,
-            left:Math.sin((2*Math.PI / 360) * 180) * (this.state.circleRadius - this.state.suroundCircleRaduis - this.state.suroundCirclePaddingOut) + this.state.circlePointX - this.state.suroundCircleRaduis }}>
-          </View>
-
-          <View style={{backgroundColor:'white',
-            height:this.state.suroundCircleRaduis*2,
-            width:this.state.suroundCircleRaduis*2,
-            borderRadius:this.state.suroundCircleRaduis,
-            position: 'absolute',
-            top: this.state.circlePointY - Math.cos((2*Math.PI /360) * 225) * (this.state.circleRadius - this.state.suroundCircleRaduis - this.state.suroundCirclePaddingOut) - this.state.suroundCircleRaduis ,
-            left:Math.sin((2*Math.PI / 360) * 225) * (this.state.circleRadius - this.state.suroundCircleRaduis - this.state.suroundCirclePaddingOut) + this.state.circlePointX - this.state.suroundCircleRaduis }}>
-          </View>
-
-          <View style={{backgroundColor:'white',
-            height:this.state.suroundCircleRaduis*2,
-            width:this.state.suroundCircleRaduis*2,
-            borderRadius:this.state.suroundCircleRaduis,
-            position: 'absolute',
-            top: this.state.circlePointY - Math.cos((2*Math.PI /360) * 270) * (this.state.circleRadius - this.state.suroundCircleRaduis - this.state.suroundCirclePaddingOut) - this.state.suroundCircleRaduis ,
-            left:Math.sin((2*Math.PI / 360) * 270) * (this.state.circleRadius - this.state.suroundCircleRaduis - this.state.suroundCirclePaddingOut) + this.state.circlePointX - this.state.suroundCircleRaduis }}>
-          </View>
-
-          <View style={{backgroundColor:'white',
-            height:this.state.suroundCircleRaduis*2,
-            width:this.state.suroundCircleRaduis*2,
-            borderRadius:this.state.suroundCircleRaduis,
-            position: 'absolute',
-            top: this.state.circlePointY - Math.cos((2*Math.PI /360) * 315) * (this.state.circleRadius - this.state.suroundCircleRaduis - this.state.suroundCirclePaddingOut) - this.state.suroundCircleRaduis ,
-            left:Math.sin((2*Math.PI / 360) * 315) * (this.state.circleRadius - this.state.suroundCircleRaduis - this.state.suroundCirclePaddingOut) + this.state.circlePointX - this.state.suroundCircleRaduis }}>
-          </View>
-
-
+          {items}
 
         </View>      
       );

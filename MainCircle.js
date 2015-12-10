@@ -51,6 +51,9 @@ var MainCirlce = React.createClass({
             "http://i1.tietuku.com/4ed54b20418e0752.png",
             "http://i1.tietuku.com/9a775127243030cd.png"];
 
+    //
+    //要生成多个组件的时候，不能用加号来加，要定义一个数组，将多个组件push进去
+    //
     var items = [];
     for(var i=0;i<this.state.suroundCircleNumber;i++){
       items.push(

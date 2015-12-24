@@ -24,7 +24,8 @@ var MainCirlce = React.createClass({
         //整个圆环圆心相对于左上角x坐标
         circlePointX:Dimensions.get('window').width/2,
         //整个圆环圆心相对于左上角Y坐标
-        circlePointY:Dimensions.get('window').height/2 -30,
+        // circlePointY:Dimensions.get('window').height/2 -30,
+        circlePointY:Dimensions.get('window').width/2 -30+26,
         //整个圆环半径
         circleRadius:Dimensions.get('window').width/2,
         //中心圆环半径
@@ -60,7 +61,7 @@ var MainCirlce = React.createClass({
     for(var i=0;i<this.state.suroundCircleNumber;i++){
       items.push(
         <MainCircleItem 
-          top={this.state.circlePointY - Math.cos((2*Math.PI /360) * 360/this.state.suroundCircleNumber *i) * (this.state.circleRadius - this.state.suroundCircleRaduis - this.state.suroundCirclePaddingOut) - this.state.suroundCircleRaduis - 70}
+          top={this.state.circlePointY - Math.cos((2*Math.PI /360) * 360/this.state.suroundCircleNumber *i) * (this.state.circleRadius - this.state.suroundCircleRaduis - this.state.suroundCirclePaddingOut) - this.state.suroundCircleRaduis}
           left={Math.sin((2*Math.PI / 360) * 360/this.state.suroundCircleNumber*i) * (this.state.circleRadius - this.state.suroundCircleRaduis - this.state.suroundCirclePaddingOut) + this.state.circlePointX - this.state.suroundCircleRaduis} 
           raduis={this.state.suroundCircleRaduis} 
           paddingOut={this.state.suroundCirclePaddingOut} 
@@ -71,7 +72,7 @@ var MainCirlce = React.createClass({
     }
 
    return (
-      <View>
+      <View style={{flex:1,justifyContent:'center',}}>
         <View style={ styles.header }>
           <View style={styles.headerLeftMenu}>
             <TouchableOpacity><Image style={styles.headerImg}
@@ -102,7 +103,7 @@ var MainCirlce = React.createClass({
             width:this.state.centerRadius*2,
             borderRadius:this.state.centerRadius,
             position: 'absolute',
-            top:this.state.circlePointY - this.state.centerRadius -70,
+            top:this.state.circlePointY - this.state.centerRadius,
             left:this.state.circlePointX - this.state.centerRadius,
           }}>
           </View>
@@ -119,10 +120,10 @@ var MainCirlce = React.createClass({
 var styles = StyleSheet.create({
   container:{
     backgroundColor:'0085C4',
-    padding:30,
     flex:1,
-    justifyContent:'center',
-    alignItems:'center'
+    justifyContent:'flex-start',
+    alignItems:'center',
+
   },
   circle: {
     backgroundColor:'#1B96C8',
@@ -139,6 +140,7 @@ var styles = StyleSheet.create({
     borderBottomWidth:1,
     borderBottomColor:'#00aaaaaa',
     flexDirection:'row',
+    marginBottom:30,
   },
   headerLeftMenu:{
     flex:1,

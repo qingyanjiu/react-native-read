@@ -24,6 +24,8 @@ var {
 
 
 var Main = React.createClass({
+
+
   componentDidMount:function(){
     StatusBarIOS.setStyle(1);
   },
@@ -37,9 +39,9 @@ var Main = React.createClass({
   },
 
   onMenuClickCallBack:function(args){
-    alert(
-      args.id
-    );
+    // alert(
+    //   args.id
+    // );
 
     this.props.navigator.replace({
       name: 'Main',
@@ -77,21 +79,17 @@ var Main = React.createClass({
       //头部菜单,//点击右边头部菜单 弹出的下拉菜单
       content = 
       <View style={{flex:1}}> 
-      
-        
         
         <View style={styles.container}>
-          
-          
 
-          <MainCircle/>
+          <MainCircle openModalCallBack={this._openModalMenu}/>
 
         </View>
         </View>
     else if(this.state.menuSelectedId==='2')
-      content = <Sign />
+      content = <Sign openModalCallBack={this._openModalMenu}/>
     else if(this.state.menuSelectedId==='3')
-      content = <MainCircle />
+      content = <MainCircle openModalCallBack={this._openModalMenu}/>
 
               // <Text style={{flex:1}}> {this.props.router.passProps.title}</Text>
           // <TouchableHighlight underlayColor='#99d9f4' onPress={this.onClickHandler.bind(this)} style={styles.button}><Text style={{color:'white'}}>跳</Text></TouchableHighlight>
@@ -132,22 +130,7 @@ var Main = React.createClass({
       content={<Menu callBack={(id) => {this.onMenuClickCallBack({id:id})}} selectId={this.state.menuSelectedId}/>}
       >
       
-      <View style={ styles.header }>
-          <View style={styles.headerLeftMenu}>
-            <TouchableOpacity><Image style={styles.headerImg}
-              source={require('./img/exit.png')}/>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.headerRightMenu}>
-            <TouchableOpacity><Image style={[styles.headerImg,{marginRight:10}]}
-              source={require('./img/chart.png')}/>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={this._openModalMenu}><Image style={styles.headerImg}
-              source={require('./img/menu.png')}/>
-            </TouchableOpacity>
-          </View>
-        </View>
+        
 
         {content}
 
@@ -171,7 +154,8 @@ var Main = React.createClass({
           </Modal>  
     </Drawer>           
       );
-    }
+    },
+
   });
 
 
@@ -191,30 +175,7 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  header: {
-    height: 60,
-    backgroundColor: '#005dd5',
-    borderBottomWidth:1,
-    borderBottomColor:'#00aaaaaa',
-    flexDirection:'row',
-  },
-  headerLeftMenu:{
-    flex:1,
-    justifyContent:'flex-start',
-    paddingTop:16,
-    paddingLeft:6,
-  },
-  headerRightMenu:{
-    flex:1,
-    flexDirection:'row',
-    justifyContent:'flex-end',
-    paddingTop:16,
-    paddingRight:6,
-  },
-  headerImg:{
-    width:40,
-    height:40,
-  },
+  
   modalContainer:{
     flex:1,
     flexDirection:'row',
@@ -227,11 +188,12 @@ var styles = StyleSheet.create({
     height:140,
     marginTop:60,
     backgroundColor:'#FFFFFF',
+    opacity:0.5,
   },
   modalMenuItem:{
     flex:1,
     justifyContent:'center',
-    borderBottomColor:'#dddddd',
+    borderBottomColor:'#666666',
     borderBottomWidth:1,
   },
 });

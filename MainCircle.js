@@ -11,6 +11,8 @@ var MainCircleItem = require('./MainCircleItem');
 var {
   StyleSheet,
   View,
+  TouchableOpacity,
+  Image,
 } = React;
 
 
@@ -58,7 +60,7 @@ var MainCirlce = React.createClass({
     for(var i=0;i<this.state.suroundCircleNumber;i++){
       items.push(
         <MainCircleItem 
-          top={this.state.circlePointY - Math.cos((2*Math.PI /360) * 360/this.state.suroundCircleNumber *i) * (this.state.circleRadius - this.state.suroundCircleRaduis - this.state.suroundCirclePaddingOut) - this.state.suroundCircleRaduis}
+          top={this.state.circlePointY - Math.cos((2*Math.PI /360) * 360/this.state.suroundCircleNumber *i) * (this.state.circleRadius - this.state.suroundCircleRaduis - this.state.suroundCirclePaddingOut) - this.state.suroundCircleRaduis - 70}
           left={Math.sin((2*Math.PI / 360) * 360/this.state.suroundCircleNumber*i) * (this.state.circleRadius - this.state.suroundCircleRaduis - this.state.suroundCirclePaddingOut) + this.state.circlePointX - this.state.suroundCircleRaduis} 
           raduis={this.state.suroundCircleRaduis} 
           paddingOut={this.state.suroundCirclePaddingOut} 
@@ -69,7 +71,29 @@ var MainCirlce = React.createClass({
     }
 
    return (
+      <View>
+        <View style={ styles.header }>
+          <View style={styles.headerLeftMenu}>
+            <TouchableOpacity><Image style={styles.headerImg}
+              source={require('./img/exit.png')}/>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.headerRightMenu}>
+            <TouchableOpacity><Image style={[styles.headerImg,{marginRight:10}]}
+              source={require('./img/chart.png')}/>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={this.props.openModalCallBack}><Image style={styles.headerImg}
+              source={require('./img/menu.png')}/>
+            </TouchableOpacity>
+          </View>
+        </View>
+        
+
         <View style={styles.container}>
+
+          
+
           <View style={styles.circle}>
           </View>
 
@@ -78,14 +102,15 @@ var MainCirlce = React.createClass({
             width:this.state.centerRadius*2,
             borderRadius:this.state.centerRadius,
             position: 'absolute',
-            top:this.state.circlePointY - this.state.centerRadius,
+            top:this.state.circlePointY - this.state.centerRadius -70,
             left:this.state.circlePointX - this.state.centerRadius,
           }}>
           </View>
 
           {items}
 
-        </View>      
+        </View>   
+      </View>   
       );
     }
   });
@@ -107,6 +132,30 @@ var styles = StyleSheet.create({
     opacity:0.6,
     borderWidth:10,
     borderColor:'#2EA5D4',
+  },
+  header: {
+    height: 60,
+    backgroundColor: '#005dd5',
+    borderBottomWidth:1,
+    borderBottomColor:'#00aaaaaa',
+    flexDirection:'row',
+  },
+  headerLeftMenu:{
+    flex:1,
+    justifyContent:'flex-start',
+    paddingTop:16,
+    paddingLeft:6,
+  },
+  headerRightMenu:{
+    flex:1,
+    flexDirection:'row',
+    justifyContent:'flex-end',
+    paddingTop:16,
+    paddingRight:6,
+  },
+  headerImg:{
+    width:40,
+    height:40,
   },
 });
 

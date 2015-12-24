@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react-native');
+var TimerMixin = require('react-timer-mixin');
 var Dimensions = require('Dimensions');
 
 
@@ -18,6 +19,7 @@ var {
 } = React;
 
 var loginIOS = React.createClass({
+  mixins: [TimerMixin],
 
   getInitialState: function() {
     return {
@@ -38,14 +40,29 @@ var loginIOS = React.createClass({
     //       },
     //     });
 
-    fetch('http://134.65.16.184:8000/userservice/session/login_user/test/111111')
-      .then((response) => response.json())
-      .then((json) => {this._loginHandler(json)})
-      .catch((error) => {
-        this.setState({
-          logging:-1,
-        });
-      });
+    // fetch('http://134.65.16.184:8000/userservice/session/login_user/test/111111')
+    //   .then((response) => response.json())
+    //   .then((json) => {this._loginHandler(json)})
+    //   .catch((error) => {
+    //     this.setState({
+    //       logging:-1,
+    //     });
+    //   });
+    
+    this.setTimeout(
+         () => { 
+          this.setState({
+            logging:0
+          });
+          this.props.navigator.replace({
+          name: 'Main',
+          id: 1,
+          passProps:{
+            title:'passTitle',
+          },
+        }); },
+         2000
+       );
     
   },
 

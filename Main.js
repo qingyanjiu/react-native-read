@@ -78,43 +78,11 @@ var Main = React.createClass({
       content = 
       <View style={{flex:1}}> 
       
-        <View style={ styles.header }>
-          <View style={styles.headerLeftMenu}>
-            <TouchableOpacity><Image style={styles.headerImg}
-              source={require('./img/exit.png')}/>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.headerRightMenu}>
-            <TouchableOpacity><Image style={[styles.headerImg,{marginRight:10}]}
-              source={require('./img/chart.png')}/>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={this._openModalMenu}><Image style={styles.headerImg}
-              source={require('./img/menu.png')}/>
-            </TouchableOpacity>
-          </View>
-        </View>
+        
         
         <View style={styles.container}>
           
-          <Modal
-            animated={true}
-            transparent={true}
-            visible={this.state.modalShow}>
-            <View style={styles.modalContainer}>
-              <View style={styles.modalMenu}>
-                <TouchableOpacity style={styles.modalMenuItem}>
-                  <Text>关闭广告</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.modalMenuItem}>
-                  <Text>    设置    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={this._closeModalMenu} style={[styles.modalMenuItem,{borderBottomWidth:0}]}>
-                  <Text>取消</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </Modal>
+          
 
           <MainCircle/>
 
@@ -163,7 +131,44 @@ var Main = React.createClass({
       //                        ||                                  ||
       content={<Menu callBack={(id) => {this.onMenuClickCallBack({id:id})}} selectId={this.state.menuSelectedId}/>}
       >
-      {content}  
+      
+      <View style={ styles.header }>
+          <View style={styles.headerLeftMenu}>
+            <TouchableOpacity><Image style={styles.headerImg}
+              source={require('./img/exit.png')}/>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.headerRightMenu}>
+            <TouchableOpacity><Image style={[styles.headerImg,{marginRight:10}]}
+              source={require('./img/chart.png')}/>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={this._openModalMenu}><Image style={styles.headerImg}
+              source={require('./img/menu.png')}/>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {content}
+
+        <Modal
+            animated={true}
+            transparent={true}
+            visible={this.state.modalShow}>
+            <View style={styles.modalContainer}>
+              <View style={styles.modalMenu}>
+                <TouchableOpacity style={styles.modalMenuItem}>
+                  <Text>关闭广告</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.modalMenuItem}>
+                  <Text>    设置    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={this._closeModalMenu} style={[styles.modalMenuItem,{borderBottomWidth:0}]}>
+                  <Text>取消</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>  
     </Drawer>           
       );
     }

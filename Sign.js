@@ -21,8 +21,6 @@ var Sign = React.createClass({
       return({
         r:100,
         opacity:1,
-        sr:100,
-        sopacity:1,
       });
   },
 
@@ -52,7 +50,7 @@ var Sign = React.createClass({
            
           </View>
 
-          <Image style={{backgroundColor:'white',height:100,width:100,borderRadius:50,position: 'absolute',top:Dimensions.get('window').height/2-50,left:Dimensions.get('window').width/2-50}} source={require('./img/sign.png')}/> 
+          <Image style={{backgroundColor:'white',height:100,width:100,borderRadius:50,position: 'absolute',top:Dimensions.get('window').height/2-50-30,left:Dimensions.get('window').width/2-50}} source={require('./img/sign.png')}/> 
 
         </View>      
       );

@@ -41,13 +41,13 @@ var loginIOS = React.createClass({
     //     });
 
     // fetch('http://134.65.16.184:8000/userservice/session/login_user/test/111111')
-    //   .then((response) => response.json())
-    //   .then((json) => {this._loginHandler(json)})
-    //   .catch((error) => {
-    //     this.setState({
-    //       logging:-1,
-    //     });
-    //   });
+      // .then((response) => response.json())
+      // .then((json) => {this._loginHandler(json)})
+      // .catch((error) => {
+      //   this.setState({
+      //     logging:-1,
+      //   });
+      // });
     
     this.setTimeout(
          () => { 
@@ -142,11 +142,11 @@ var styles = StyleSheet.create({
   inputs: {
     height:20*PixelRatio.get(),
     width:Dimensions.get('window').width*3/4,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255,255,255,0.6)',
     borderWidth: 0,
     borderColor: '#DDDDDD',
-    borderRadius: 4,
-    marginBottom:1,
+    borderRadius:22,
+    marginBottom:10,
     alignSelf: 'center',
   },
   button: {
@@ -155,10 +155,10 @@ var styles = StyleSheet.create({
     backgroundColor: '#48BBEC',
     borderColor: '#48BBEC',
     borderWidth: 1,
-    marginTop:10,
-    borderRadius: 4,
+    marginTop:6,
+    borderRadius: 22,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   }
 });
 

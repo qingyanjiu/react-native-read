@@ -9,7 +9,7 @@ var React = require('react-native');
 var Dimensions = require('Dimensions');
 
 var Login = require('./loginIOS');
-var Main = require('./Main');
+var Main = require('./ReadMain');
 var Ma = require('./Ma');
 
 

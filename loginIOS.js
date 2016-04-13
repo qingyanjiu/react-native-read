@@ -23,54 +23,57 @@ var loginIOS = React.createClass({
 
   getInitialState: function() {
     return {
-      logging: 0
+      logging: 0,
+      username:'',
+      password:'',
     };
   },
 
-  onLoginHandler:function(){   
+  onLoginHandler:function(){
     this.setState({
       logging: 1
     });
 
-    // this.props.navigator.replace({
+    fetch('https://ntizyc-3000-lvndii.box.myide.io/read/user/login',
+          {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'post',
+          body: JSON.stringify({ 
+              'username': this.state.username,
+              'password': this.state.password,
+              'type':'ios'
+          })
+      })
+      .then((response) => response.json())
+      .then((json) => {this._loginHandler(json)})
+      .catch((error) => {
+        this.setState({
+          logging:-1,
+        });
+      });
+    
+    // this.setTimeout(
+    //      () => { 
+    //       this.setState({
+    //         logging:0
+    //       });
+    //       this.props.navigator.replace({
     //       name: 'Main',
     //       id: 1,
     //       passProps:{
     //         title:'passTitle',
     //       },
-    //     });
-
-    // fetch('http://134.65.16.184:8000/userservice/session/login_user/test/111111')
-      // .then((response) => response.json())
-      // .then((json) => {this._loginHandler(json)})
-      // .catch((error) => {
-      //   this.setState({
-      //     logging:-1,
-      //   });
-      // });
-    
-    this.setTimeout(
-         () => { 
-          this.setState({
-            logging:0
-          });
-          this.props.navigator.replace({
-          name: 'Main',
-          id: 1,
-          passProps:{
-            title:'passTitle',
-          },
-        }); },
-         2000
-       );
+    //     }); },
+    //      2000
+    //    );
     
   },
 
   //登陆有返回的操作
-  _loginHandler:function(json){
-    console.log(json);
-    //登陆成功 1
-     if(json.errcode === 0){
+  _loginHandler:function(json){    //登陆成功 
+     if(json.result === 'success'){
         this.setState({
           logging:0
         });
@@ -82,10 +85,17 @@ var loginIOS = React.createClass({
           },
         });
     }
-    //login failed -1
-    else{
+    //登录失败
+    else if(json.result === 'fail'){
+      alert("用户名或密码错误");
       this.setState({
         logging:0,
+      });
+    }
+    else{
+      alert("登录失败，请稍后再试");
+      this.setState({
+          logging:0,
       });
     }
   },
@@ -101,9 +111,9 @@ var loginIOS = React.createClass({
     else if(this.state.logging === 0)
       content =
       <Image style={styles.image} source={require('./img/login_back.jpg')} resizeMode={'stretch'}>
-        <TextInput style={styles.inputs} placeholder={'请输入用户名'} textAlign={'center'}> 
+        <TextInput style={styles.inputs} placeholder={'请输入用户名'} textAlign={'center'} onChangeText={(text) => this.setState({username:text})} value={this.state.username}> 
         </TextInput>
-        <TextInput style={styles.inputs} placeholder={'请输入密码'} textAlign={'center'} password={true}>
+        <TextInput style={styles.inputs} placeholder={'请输入密码'} textAlign={'center'} password={true} onChangeText={(text) => this.setState({password:text})} value={this.state.password}>
         </TextInput>
         <TouchableHighlight underlayColor='#99d9f4' onPress={this.onLoginHandler.bind(this)} style={styles.button}><Text style={{color:'white'}}>登录</Text></TouchableHighlight>
       </Image>;

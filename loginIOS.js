@@ -49,8 +49,9 @@ var loginIOS = React.createClass({
       .then((response) => response.json())
       .then((json) => {this._loginHandler(json)})
       .catch((error) => {
+        alert("登录失败，请稍后再试");
         this.setState({
-          logging:-1,
+            logging:0,
         });
       });
     
@@ -72,7 +73,7 @@ var loginIOS = React.createClass({
   },
 
   //登陆有返回的操作
-  _loginHandler:function(json){    //登陆成功 
+  _loginHandler:function(err,json){   //登陆成功 
      if(json.result === 'success'){
         this.setState({
           logging:0
@@ -90,12 +91,6 @@ var loginIOS = React.createClass({
       alert("用户名或密码错误");
       this.setState({
         logging:0,
-      });
-    }
-    else{
-      alert("登录失败，请稍后再试");
-      this.setState({
-          logging:0,
       });
     }
   },

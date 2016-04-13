@@ -74,11 +74,11 @@ var ReadMain = React.createClass({
     return (
       <View style={{
         position: 'absolute',
-        bottom: -25,
+        bottom: 0,
         right: 10,
       }}>
         <Text><Text style={{
-          color: '#FFFFFF',
+          color: '#007aff',
           fontSize: 20,
         }}>{index + 1}</Text>/{total}</Text>
       </View>
@@ -90,15 +90,14 @@ var ReadMain = React.createClass({
     var books = [];
     for(var i=0;i<4;i++){
       books.push(
-        <View style={{width:Dimensions.get('window').width,  height:Dimensions.get('window').height/3,backgroundColor:'rgba(255,255,255,0.6)'}}>
-          
-        </View>
+        
         );
     }
 
 
    return (
     <View style={{flex:1,justifyContent:'center',}}>
+
       <View style={ styles.header }>
           <View style={styles.headerLeftMenu}>
             <TouchableOpacity><Image style={styles.headerImg}
@@ -118,25 +117,76 @@ var ReadMain = React.createClass({
 
 
       <View style={styles.container}>
-        <Swiper style={styles.wrapper} height={240} 
+        <Swiper style={styles.wrapper} height={Dimensions.get('window').height/2-120} 
           renderPagination={this.renderPagination}
           paginationStyle={{
             bottom: -23, left: null, right: 10,
           }} loop={true}>
-          <View style={styles.slide} title={<Text numberOfLines={1}>第一本书</Text>}>
-            <Image style={styles.image} source={{uri: 'http://c.hiphotos.baidu.com/image/w%3D310/sign=0dff10a81c30e924cfa49a307c096e66/7acb0a46f21fbe096194ceb468600c338644ad43.jpg'}} />
+          <View style={styles.slide} title={<Text numberOfLines={1}></Text>}>
+            <Image style={styles.image} source={{uri: 'https://img1.doubanio.com/lpic/s1763397.jpg'}} resizeMode={'contain'}/>
           </View>
-          <View style={styles.slide} title={<Text numberOfLines={1}>Big lie behind Nine’s new show</Text>}>
-            <Image style={styles.image} source={{uri: 'http://a.hiphotos.baidu.com/image/w%3D310/sign=4459912736a85edffa8cf822795509d8/bba1cd11728b4710417a05bbc1cec3fdfc032374.jpg'}} />
+          <View style={styles.slide} title={<Text numberOfLines={1}></Text>}>
+            <Image style={styles.image} source={{uri: 'https://img3.doubanio.com/lpic/s26686524.jpg'}} resizeMode={'contain'}/>
           </View>
-          <View style={styles.slide} title={<Text numberOfLines={1}>Why Stone split from Garfield</Text>}>
-            <Image style={styles.image} source={{uri: 'http://e.hiphotos.baidu.com/image/w%3D310/sign=9a8b4d497ed98d1076d40a30113eb807/0823dd54564e9258655f5d5b9e82d158ccbf4e18.jpg'}} />
+          <View style={styles.slide} title={<Text numberOfLines={1}></Text>}>
+            <Image style={styles.image} source={{uri: 'https://img1.doubanio.com/lpic/s3193158.jpg'}} resizeMode={'contain'}/>
           </View>
-          <View style={styles.slide} title={<Text numberOfLines={1}>Learn from Kim K to land that job</Text>}>
-            <Image style={styles.image} source={{uri: 'http://e.hiphotos.baidu.com/image/w%3D310/sign=2da0245f79ec54e741ec1c1f89399bfd/9d82d158ccbf6c818c958589be3eb13533fa4034.jpg'}} />
+          <View style={styles.slide} title={<Text numberOfLines={1}></Text>}>
+            <Image style={styles.image} source={{uri: 'https://img1.doubanio.com/lpic/s1446358.jpg'}} resizeMode={'contain'}/>
           </View>
         </Swiper>
+
+        <Swiper style={styles.secondSwiper} height={Dimensions.get('window').height/2} horizontal={false} autoplay={false} loop={true}>
+          <View style={styles.slide1}>
+            <Text style={styles.text}>启读</Text>
+          </View>
+          <View style={styles.slide2}>
+            <Text style={styles.text}>书签</Text>
+          </View>
+          <View style={styles.slide3}>
+            <Text style={styles.text}>书评</Text>
+          </View>
+          <View style={styles.slide4}>
+            <Text style={styles.text}>毕读</Text>
+          </View>
+          <View style={styles.slide5}>
+            <Text style={styles.text}>分享</Text>
+          </View>
+        </Swiper>
+
       </View>
+
+      <View style={ styles.footer }>
+          <View style={styles.footerItem}>
+            <TouchableOpacity style={styles.footerMenu}>
+              <Image style={styles.footerImg} source={require('./img/foot_icon_home.png')}>
+              </Image>
+              {/*<Text style={{fontSize:10,paddingTop:4,color:'#FFFFFF'}}>乐读主页</Text>*/}
+            </TouchableOpacity>
+          </View>
+          <View style={styles.footerItem}>
+            <TouchableOpacity style={styles.footerMenu}>
+              <Image style={styles.footerImg} source={require('./img/foot_icon_search.png')}>
+              </Image>
+              {/*<Text style={{fontSize:10,paddingTop:4,color:'#FFFFFF'}}>查找书籍</Text>*/}
+            </TouchableOpacity>
+          </View>
+          <View style={styles.footerItem}>
+            <TouchableOpacity onPress={this.props.openModalCallBack} style={styles.footerMenu}>
+              <Image style={styles.footerImg} source={require('./img/foot_icon_plan.png')}>
+              </Image>
+              {/*<Text style={{fontSize:10,paddingTop:4,color:'#FFFFFF'}}>乐读计划</Text>*/}
+            </TouchableOpacity>
+          </View>
+          <View style={styles.footerItem}>
+            <TouchableOpacity onPress={this.props.openModalCallBack} style={styles.footerMenu}>
+              <Image style={styles.footerImg} source={require('./img/foot_icon_history.png')}>
+              </Image>
+              {/*<Text style={{fontSize:10,paddingTop:4,color:'#FFFFFF'}}>乐读历史</Text>*/}
+            </TouchableOpacity>
+          </View>
+      </View>
+
     </View>
       );
     },
@@ -147,7 +197,7 @@ var ReadMain = React.createClass({
 var styles = StyleSheet.create({
   container:{
     flex:1,
-    backgroundColor:'#0085C4',
+    backgroundColor:'#FFFFFF',
   },
   
   modalContainer:{
@@ -157,9 +207,8 @@ var styles = StyleSheet.create({
   },
   header: {
     height: 60,
-    backgroundColor: '#005dd5',
-    borderBottomWidth:1,
-    borderBottomColor:'#00aaaaaa',
+    backgroundColor: 'rgba(219,188,86,0.8)',
+    borderBottomWidth:0,
     flexDirection:'row',
     marginBottom:1,
   },
@@ -181,7 +230,29 @@ var styles = StyleSheet.create({
     height:40,
   },
 
+  footer: {
+    height: 58,
+    backgroundColor: 'rgba(219,188,86,0.4)',
+    borderBottomWidth:0,
+    flexDirection:'row',
+    marginTop:1,
+  },
+  footerImg:{
+    width:40,
+    height:40,
+  },
+  footerItem:{
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  footerMenu:{
+    flexDirection:'column',
+    alignItems:'center',
+  },
+
   wrapper: {
+    marginBottom:1,
   },
   slide: {
     flex: 1,
@@ -195,6 +266,39 @@ var styles = StyleSheet.create({
   },
   image: {
     flex: 1,
+  },
+
+  secondSwiper:{
+  },
+  slide1: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(153,204,0,0.4)',
+  },
+  slide2: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(153,204,255,0.4)',
+  },
+  slide3: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(250,128,114,0.4)',
+  },
+  slide4: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(143,188,143,0.4)',
+  },
+  slide5: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,105,180,0.4)',
   }
 });
 

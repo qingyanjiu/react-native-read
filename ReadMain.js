@@ -99,18 +99,15 @@ var ReadMain = React.createClass({
     <View style={{flex:1,justifyContent:'center',}}>
 
       <View style={ styles.header }>
-          <View style={styles.headerLeftMenu}>
+        <View style={styles.headerLeftMenu}>
             <TouchableOpacity><Image style={styles.headerImg}
-              source={require('./img/exit.png')}/>
+              source={require('./img/head_icon_scan.png')} resizeMode={'contain'}/>
             </TouchableOpacity>
           </View>
-          <View style={styles.headerRightMenu}>
-            <TouchableOpacity><Image style={[styles.headerImg,{marginRight:10}]}
-              source={require('./img/chart.png')}/>
-            </TouchableOpacity>
-
+        <Image style={{height:20,marginBottom:12}} source={require('./img/logo.png')} resizeMode={'contain'}/>
+        <View style={styles.headerRightMenu}>
             <TouchableOpacity onPress={this.props.openModalCallBack}><Image style={styles.headerImg}
-              source={require('./img/menu.png')}/>
+              source={require('./img/head_icon_share.png')} resizeMode={'contain'}/>
             </TouchableOpacity>
           </View>
       </View>
@@ -211,23 +208,21 @@ var styles = StyleSheet.create({
     borderBottomWidth:0,
     flexDirection:'row',
     marginBottom:1,
+    justifyContent:'center',
+    alignItems:'flex-end'
   },
   headerLeftMenu:{
     flex:1,
     justifyContent:'flex-start',
-    paddingTop:16,
-    paddingLeft:6,
   },
   headerRightMenu:{
     flex:1,
     flexDirection:'row',
     justifyContent:'flex-end',
-    paddingTop:16,
-    paddingRight:6,
   },
   headerImg:{
-    width:40,
-    height:40,
+    height:34,
+    marginBottom:4,
   },
 
   footer: {
@@ -238,8 +233,8 @@ var styles = StyleSheet.create({
     marginTop:1,
   },
   footerImg:{
-    width:40,
-    height:40,
+    width:36,
+    height:36,
   },
   footerItem:{
     flex:1,

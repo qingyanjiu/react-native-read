@@ -248,6 +248,7 @@ var styles = StyleSheet.create({
 
   wrapper: {
     marginBottom:1,
+    backgroundColor: 'rgba(219,188,86,0.1)',
   },
   slide: {
     flex: 1,

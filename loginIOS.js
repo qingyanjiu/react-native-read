@@ -4,6 +4,7 @@ var React = require('react-native');
 var TimerMixin = require('react-timer-mixin');
 var Dimensions = require('Dimensions');
 
+const Realm = require('realm');
 
 var Constants = require('./Constants');
 var Loading = require('./loadingIOS');
@@ -83,15 +84,28 @@ var loginIOS = React.createClass({
           logging:0
         });
 
-        //session信息写到本地
-        // realm.write(() => {
-        //   let mySession = realm.create('Session', {
-        //     id: json.sessionid,
-        //   });
-        // });
+        //
+        //session信息写到本地存储
+        //
+        let realm = new Realm({
+         schema: [{name: 'Session', properties: {id: 'string'}}]
+       });
 
-        // let se = realm.objects('Session');
-        // alert(se.sessionid);
+        realm.write(() => {
+          //先删除所有本地保存的session
+          let sessions = realm.objects('Session');
+          realm.delete(sessions); 
+          //然后将最新session放入
+          let mySession = realm.create('Session', {
+            id: json.sessionid,
+          });
+        });
+        //
+        //session信息写到本地存储
+        //
+
+        let se = realm.objects('Session');
+        alert(se[0].id);
 
 
         this.props.navigator.replace({

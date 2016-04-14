@@ -4,6 +4,8 @@ var React = require('react-native');
 var Dimensions = require('Dimensions');
 var Swiper = require('react-native-swiper')
 
+const Realm = require('realm');
+
 var Constants = require('./Constants');
 
 var {
@@ -37,6 +39,14 @@ var ReadMain = React.createClass({
   componentDidMount:function(){
     StatusBar.setBarStyle(1);
 
+    //获取本地保存的sessionid
+    let realm = new Realm({
+      schema: [{name: 'Session', properties: {id: 'string'}}]
+    });
+    //获取本地保存的sessionid
+    let sess = realm.objects('Session');
+    let sessid = sess[0].id;
+
     //获取阅读计划信息
     fetch(Constants.URL+'/read/book/queryReadPlan',
           {
@@ -45,13 +55,15 @@ var ReadMain = React.createClass({
           },
           method: 'post',
           body: JSON.stringify({
-              'type':'ios'
+              'sessionid':sessid,
+              'type':'ios',
           })
       })
-      .then((response) => response.json())
+      //这里不用转换，根据后台返回的值来定
+      //.then((response) => response.json())
       .then((json) => {this._getReadPlanHandler(json)})
       .catch((error) => {
-        alert("获取数据失败，请稍后再试");
+        alert("获取数据失败，请稍后再试"+error);
         this.setState({
             logging:0,
         });
@@ -60,11 +72,12 @@ var ReadMain = React.createClass({
 
   //获取阅读计划返回的操作
   _getReadPlanHandler:function(json){   //成功 
+    alert(json[0]);
      this.setState({
         //读书计划列表状态初始化
-        bookPlan : data,
+        bookPlan : json,
         //默认选择的当前选择书籍为第一本dele
-        currentBook:data[0],
+        currentBook:json[0],
       });
   },
 
@@ -108,10 +121,13 @@ var ReadMain = React.createClass({
 
 
   render: function() {
-    var books = [];
-    for(var i=0;i<4;i++){
-      books.push(
-        
+    var planBooks = [];
+    let bookPlan = this.state.bookPlan;
+    for(var i=0;i<bookPlan.length;i++){
+      planBooks.push(
+          <View style={styles.slide} title={<Text numberOfLines={1}></Text>}>
+            <Image style={styles.image} source={{uri: bookPlan[i].image_url}} resizeMode={'contain'}/>
+          </View>
         );
     }
 
@@ -140,18 +156,7 @@ var ReadMain = React.createClass({
           paginationStyle={{
             bottom: -23, left: null, right: 10,
           }} loop={true}>
-          <View style={styles.slide} title={<Text numberOfLines={1}></Text>}>
-            <Image style={styles.image} source={{uri: 'https://img1.doubanio.com/lpic/s1763397.jpg'}} resizeMode={'contain'}/>
-          </View>
-          <View style={styles.slide} title={<Text numberOfLines={1}></Text>}>
-            <Image style={styles.image} source={{uri: 'https://img3.doubanio.com/lpic/s26686524.jpg'}} resizeMode={'contain'}/>
-          </View>
-          <View style={styles.slide} title={<Text numberOfLines={1}></Text>}>
-            <Image style={styles.image} source={{uri: 'https://img1.doubanio.com/lpic/s3193158.jpg'}} resizeMode={'contain'}/>
-          </View>
-          <View style={styles.slide} title={<Text numberOfLines={1}></Text>}>
-            <Image style={styles.image} source={{uri: 'https://img1.doubanio.com/lpic/s1446358.jpg'}} resizeMode={'contain'}/>
-          </View>
+          {planBooks}
         </Swiper>
 
         <Swiper style={styles.secondSwiper} height={Dimensions.get('window').height/2} horizontal={false} autoplay={false} loop={true}>

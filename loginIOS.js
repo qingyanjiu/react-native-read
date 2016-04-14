@@ -34,7 +34,7 @@ var loginIOS = React.createClass({
       logging: 1
     });
 
-    fetch('https://ntizyc-3000-lvndii.box.myide.io/read/user/login',
+    fetch('https://ntizyc-3000-brcxwl.box.myide.io/read/user/login',
           {
           headers: {
             'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ var loginIOS = React.createClass({
   },
 
   //登陆有返回的操作
-  _loginHandler:function(err,json){   //登陆成功 
+  _loginHandler:function(json){   //登陆成功 
      if(json.result === 'success'){
         this.setState({
           logging:0

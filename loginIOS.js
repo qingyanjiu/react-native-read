@@ -18,7 +18,6 @@ var {
   View,
   TouchableHighlight,
   Text,
-  AsyncStorage,
 } = React;
 
 

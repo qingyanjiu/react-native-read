@@ -56,11 +56,11 @@ var ReadMain = React.createClass({
           method: 'post',
           body: JSON.stringify({
               'sessionid':sessid,
-              'type':'ios',
+              'type':'ios'
           })
       })
       //这里不用转换，根据后台返回的值来定
-      //.then((response) => response.json())
+      .then((response) => response.json())
       .then((json) => {this._getReadPlanHandler(json)})
       .catch((error) => {
         alert("获取数据失败，请稍后再试"+error);
@@ -72,7 +72,6 @@ var ReadMain = React.createClass({
 
   //获取阅读计划返回的操作
   _getReadPlanHandler:function(json){   //成功 
-    alert(json[0]);
      this.setState({
         //读书计划列表状态初始化
         bookPlan : json,

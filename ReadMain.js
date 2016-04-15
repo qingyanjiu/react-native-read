@@ -24,8 +24,8 @@ var {
 
 var sessid;
 
-//swiper控件有bug，如果滑动后用state更新bookIndex（当前选中书籍编号）的话会导致图片显示出问题，于是放到外面来控制
-var bookIndex = 0;
+// //swiper控件有bug，如果滑动后用state更新bookIndex（当前选中书籍编号）的话会导致图片显示出问题，于是放到外面来控制
+// var bookIndex = 0;
 
 var ReadMain = React.createClass({
 
@@ -33,6 +33,8 @@ var ReadMain = React.createClass({
     return({
       //已选择的菜单id,判断是否存在，如果不存在 说明是第一次进来，设置为1
       menuSelectedId:this.props.router.passProps.menuSelectedId ? this.props.router.passProps.menuSelectedId:'1',
+      bookIndex:0,
+      controlIndex:0,
       bookPlan:[], //查询到的在当前用户阅读计划中的书籍列表，默认是空的 book列表
       // currentBook:{},//当前已选择书籍的信息 book对象
       readInfo:{},//点击选项卡后查询当前书籍的阅读信息 readHistory对象
@@ -67,7 +69,7 @@ var ReadMain = React.createClass({
       .then((response) => response.json())
       .then((json) => {this._getReadPlanHandler(json)})
       .catch((error) => {
-        alert("获取书籍信息失败，请稍后再试"+error);
+        alert("获取书籍信息失败，请稍后再试");
       });
   },
 
@@ -133,7 +135,7 @@ var ReadMain = React.createClass({
           body: JSON.stringify({
               'sessionid':sessid,
               'type':'ios',
-              'douban_id':this.state.bookPlan[bookIndex].douban_id,
+              'douban_id':this.state.bookPlan[this.state.bookIndex].douban_id,
           })
       })
       //这里不用转换，根据后台返回的值来定
@@ -150,7 +152,17 @@ var ReadMain = React.createClass({
 
   //选择书籍滑动后的操作,swiper滑动控件当前页变化，同时保存当前书籍信息
   _onMomentumScrollEnd: function (e, state, context) {
-    bookIndex = state.index;
+    // bookIndex = state.index;
+    this.setState({
+      bookIndex:state.index
+    });
+  },
+
+//选择操作滚动
+  _scrollControl: function (e, state, context) {
+    this.setState({
+      controlIndex:state.index
+    });
   },
 
   render: function() {
@@ -172,9 +184,10 @@ var ReadMain = React.createClass({
     var subContent;
     if(this.state.bookPlan.length > 0){
       subContent=(
-        <Swiper style={styles.secondSwiper} height={Dimensions.get('window').height/2} horizontal={false} autoplay={false} loop={true}>
+        <Swiper style={styles.secondSwiper} height={Dimensions.get('window').height/2} horizontal={false} autoplay={false} loop={false} 
+          onMomentumScrollEnd = {this._scrollControl} index={this.state.controlIndex}>
           <View style={styles.slide1}>
-            <Text style={styles.text}>启读</Text>
+            <Text style={styles.text}>启读{this.state.bookPlan[this.state.bookIndex].name}</Text>
           </View>
           <View style={styles.slide2}>
             <Text style={styles.text}>书签</Text>
@@ -192,15 +205,16 @@ var ReadMain = React.createClass({
       );
     }
 
+    {/*loop一定要为false否则index设置不起效果，2的一比*/}
     var content;
     if(this.state.bookPlan.length > 0){
       content = (
         <View>
-        <Swiper style={styles.wrapper} height={Dimensions.get('window').height/2-120}
+        <Swiper style={styles.wrapper} height={Dimensions.get('window').height/2-120} index={this.state.bookIndex}
           renderPagination={this.renderPagination} onMomentumScrollEnd = {this._onMomentumScrollEnd}
           paginationStyle={{
             bottom: -23, left: null, right: 10,
-          }} loop={true}> 
+          }} loop={false}> 
           {planBooks}
         </Swiper>
         {subContent}

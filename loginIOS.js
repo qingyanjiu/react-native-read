@@ -8,7 +8,6 @@ const Realm = require('realm');
 
 var Constants = require('./Constants');
 var Loading = require('./loadingIOS');
-var Main = require('./Main');
 
 var {
   Image,
@@ -103,8 +102,8 @@ var loginIOS = React.createClass({
         //session信息写到本地存储
         //
 
-        let se = realm.objects('Session');
-        alert(se[0].id);
+        // let se = realm.objects('Session');
+        // alert(se[0].id);
 
 
         this.props.navigator.replace({

@@ -4,9 +4,9 @@ var React = require('react-native');
 var Dimensions = require('Dimensions');
 var Swiper = require('react-native-swiper')
 
-const Realm = require('realm');
 
 var Constants = require('./Constants');
+var Utils = require('./Utils');
 
 var {
   Image,
@@ -22,6 +22,10 @@ var {
   ScrollView,
 } = React;
 
+var sessid;
+
+//swiper控件有bug，如果滑动后用state更新bookIndex（当前选中书籍编号）的话会导致图片显示出问题，于是放到外面来控制
+var bookIndex = 0;
 
 var ReadMain = React.createClass({
 
@@ -30,23 +34,23 @@ var ReadMain = React.createClass({
       //已选择的菜单id,判断是否存在，如果不存在 说明是第一次进来，设置为1
       menuSelectedId:this.props.router.passProps.menuSelectedId ? this.props.router.passProps.menuSelectedId:'1',
       bookPlan:[], //查询到的在当前用户阅读计划中的书籍列表，默认是空的 book列表
-      currentBook:{},//当前已选择书籍的信息 book对象
+      // currentBook:{},//当前已选择书籍的信息 book对象
       readInfo:{},//点击选项卡后查询当前书籍的阅读信息 readHistory对象
     });
   },
 
+  componentWillMount:function(){
+    //获取本地保存的sessionid
+    Utils.getSessionId(
+      function(data){
+        sessid = data;
+      }
+    );
+  },
 
   componentDidMount:function(){
     StatusBar.setBarStyle(1);
-
-    //获取本地保存的sessionid
-    let realm = new Realm({
-      schema: [{name: 'Session', properties: {id: 'string'}}]
-    });
-    //获取本地保存的sessionid
-    let sess = realm.objects('Session');
-    let sessid = sess[0].id;
-
+    
     //获取阅读计划信息
     fetch(Constants.URL+'/read/book/queryReadPlan',
           {
@@ -63,10 +67,7 @@ var ReadMain = React.createClass({
       .then((response) => response.json())
       .then((json) => {this._getReadPlanHandler(json)})
       .catch((error) => {
-        alert("获取数据失败，请稍后再试"+error);
-        this.setState({
-            logging:0,
-        });
+        alert("获取书籍信息失败，请稍后再试"+error);
       });
   },
 
@@ -75,8 +76,8 @@ var ReadMain = React.createClass({
      this.setState({
         //读书计划列表状态初始化
         bookPlan : json,
-        //默认选择的当前选择书籍为第一本dele
-        currentBook:json[0],
+        // //默认选择的当前选择书籍为第一本
+        // currentBook:json[0],
       });
   },
 
@@ -102,7 +103,7 @@ var ReadMain = React.createClass({
         id: 2,});
   },
 
-
+  //阅读计划切换书籍的时候调用
   renderPagination :function (index, total, context) {
     return (
       <View style={{
@@ -116,20 +117,105 @@ var ReadMain = React.createClass({
         }}>{index + 1}</Text>/{total}</Text>
       </View>
     )
+
   },
 
+  //获取当前书籍的阅读信息
+  //
+  getCurrentReadInfo:function(){
+    //获取当前书籍的阅读信息
+    fetch(Constants.URL+'/read/book/getReadInfo',
+          {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'post',
+          body: JSON.stringify({
+              'sessionid':sessid,
+              'type':'ios',
+              'douban_id':this.state.bookPlan[bookIndex].douban_id,
+          })
+      })
+      //这里不用转换，根据后台返回的值来定
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({
+          readInfo:json
+        });
+      })
+      .catch((error) => {
+        alert("获取阅读信息失败，请稍后再试"+error);
+      });
+    },
+
+  //选择书籍滑动后的操作,swiper滑动控件当前页变化，同时保存当前书籍信息
+  _onMomentumScrollEnd: function (e, state, context) {
+    bookIndex = state.index;
+  },
 
   render: function() {
+    //阅读计划列表
     var planBooks = [];
     let bookPlan = this.state.bookPlan;
-    for(var i=0;i<bookPlan.length;i++){
+
+    for(let i=0;i<bookPlan.length;i++){
       planBooks.push(
-          <View style={styles.slide} title={<Text numberOfLines={1}></Text>}>
-            <Image style={styles.image} source={{uri: bookPlan[i].image_url}} resizeMode={'contain'}/>
+          <View key={bookPlan[i].douban_id} style={styles.slide} title={<Text numberOfLines={1}></Text>}>
+            <Image style={styles.image} source={{uri: bookPlan[i].image_url}} resizeMode={'contain'} >
+            </Image>
           </View>
         );
     }
 
+
+    //操作列表
+    var subContent;
+    if(this.state.bookPlan.length > 0){
+      subContent=(
+        <Swiper style={styles.secondSwiper} height={Dimensions.get('window').height/2} horizontal={false} autoplay={false} loop={true}>
+          <View style={styles.slide1}>
+            <Text style={styles.text}>启读</Text>
+          </View>
+          <View style={styles.slide2}>
+            <Text style={styles.text}>书签</Text>
+          </View>
+          <View style={styles.slide3}>
+            <Text style={styles.text}>书评</Text>
+          </View>
+          <View style={styles.slide4}>
+            <Text style={styles.text}>毕读</Text>
+          </View>
+          <View style={styles.slide5}>
+            <Text style={styles.text}>分享</Text>
+          </View>
+        </Swiper>
+      );
+    }
+
+    var content;
+    if(this.state.bookPlan.length > 0){
+      content = (
+        <View>
+        <Swiper style={styles.wrapper} height={Dimensions.get('window').height/2-120}
+          renderPagination={this.renderPagination} onMomentumScrollEnd = {this._onMomentumScrollEnd}
+          paginationStyle={{
+            bottom: -23, left: null, right: 10,
+          }} loop={true}> 
+          {planBooks}
+        </Swiper>
+        {subContent}
+        </View>
+        );
+      }
+      else {
+        content = (
+            <View style={styles.slide5}>
+              <Text style={styles.text}>
+                暂无阅读计划
+              </Text>
+            </View>
+          );
+      }
 
    return (
     <View style={{flex:1,justifyContent:'center',}}>
@@ -150,31 +236,7 @@ var ReadMain = React.createClass({
 
 
       <View style={styles.container}>
-        <Swiper style={styles.wrapper} height={Dimensions.get('window').height/2-120} 
-          renderPagination={this.renderPagination}
-          paginationStyle={{
-            bottom: -23, left: null, right: 10,
-          }} loop={true}>
-          {planBooks}
-        </Swiper>
-
-        <Swiper style={styles.secondSwiper} height={Dimensions.get('window').height/2} horizontal={false} autoplay={false} loop={true}>
-          <View style={styles.slide1}>
-            <Text style={styles.text}>启读</Text>
-          </View>
-          <View style={styles.slide2}>
-            <Text style={styles.text}>书签</Text>
-          </View>
-          <View style={styles.slide3}>
-            <Text style={styles.text}>书评</Text>
-          </View>
-          <View style={styles.slide4}>
-            <Text style={styles.text}>毕读</Text>
-          </View>
-          <View style={styles.slide5}>
-            <Text style={styles.text}>分享</Text>
-          </View>
-        </Swiper>
+        {content}
 
       </View>
 

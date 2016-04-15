@@ -187,19 +187,39 @@ var ReadMain = React.createClass({
         <Swiper style={styles.secondSwiper} height={Dimensions.get('window').height/2} horizontal={false} autoplay={false} loop={false} 
           onMomentumScrollEnd = {this._scrollControl} index={this.state.controlIndex}>
           <View style={styles.slide1}>
-            <Text style={styles.text}>启读{this.state.bookPlan[this.state.bookIndex].name}</Text>
+            <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(219,188,86,0.8)',borderRadius:25}}>
+              <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
+                source={require('./img/start.png')} resizeMode={'contain'}/>
+              <Text style={styles.text}>启读</Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.slide2}>
-            <Text style={styles.text}>书签</Text>
+            <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(119,188,86,0.8)',borderRadius:25}}>
+              <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
+                source={require('./img/start.png')} resizeMode={'contain'}/>
+              <Text style={styles.text}>书签</Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.slide3}>
-            <Text style={styles.text}>书评</Text>
+            <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(219,86,86,0.8)',borderRadius:25}}>
+              <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
+                source={require('./img/start.png')} resizeMode={'contain'}/>
+              <Text style={styles.text}>书评</Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.slide4}>
-            <Text style={styles.text}>毕读</Text>
+            <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(19,188,167,0.8)',borderRadius:25}}>
+              <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
+                source={require('./img/start.png')} resizeMode={'contain'}/>
+              <Text style={styles.text}>毕读</Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.slide5}>
-            <Text style={styles.text}>分享</Text>
+            <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(111,88,67,0.8)',borderRadius:25}}>
+              <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
+                source={require('./img/start.png')} resizeMode={'contain'}/>
+              <Text style={styles.text}>推荐</Text>
+            </TouchableOpacity>
           </View>
         </Swiper>
       );
@@ -358,7 +378,7 @@ var styles = StyleSheet.create({
   },
   text: {
     color: '#fff',
-    fontSize: 30,
+    fontSize: 20,
     fontWeight: 'bold',
   },
   image: {

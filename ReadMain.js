@@ -184,10 +184,10 @@ var ReadMain = React.createClass({
     var subContent;
     if(this.state.bookPlan.length > 0){
       subContent=(
-        <Swiper style={styles.secondSwiper} height={Dimensions.get('window').height/2} horizontal={false} autoplay={false} loop={false} 
-          onMomentumScrollEnd = {this._scrollControl} index={this.state.controlIndex}>
+        <Swiper style={styles.secondSwiper} height={Dimensions.get('window').height/2} horizontal={true} autoplay={false} loop={false} 
+          index={this.state.controlIndex} onMomentumScrollEnd = {this._scrollControl}>
           <View style={styles.slide1}>
-            <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(219,188,86,0.8)',borderRadius:25}}>
+            <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(45,188,86,0.8)',borderRadius:25}}>
               <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
                 source={require('./img/start.png')} resizeMode={'contain'}/>
               <Text style={styles.text}>启读</Text>
@@ -196,28 +196,28 @@ var ReadMain = React.createClass({
           <View style={styles.slide2}>
             <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(119,188,86,0.8)',borderRadius:25}}>
               <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
-                source={require('./img/start.png')} resizeMode={'contain'}/>
+                source={require('./img/tag.png')} resizeMode={'contain'}/>
               <Text style={styles.text}>书签</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.slide3}>
             <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(219,86,86,0.8)',borderRadius:25}}>
               <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
-                source={require('./img/start.png')} resizeMode={'contain'}/>
+                source={require('./img/comment.png')} resizeMode={'contain'}/>
               <Text style={styles.text}>书评</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.slide4}>
             <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(19,188,167,0.8)',borderRadius:25}}>
               <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
-                source={require('./img/start.png')} resizeMode={'contain'}/>
+                source={require('./img/complete.png')} resizeMode={'contain'}/>
               <Text style={styles.text}>毕读</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.slide5}>
             <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(111,88,67,0.8)',borderRadius:25}}>
               <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
-                source={require('./img/start.png')} resizeMode={'contain'}/>
+                source={require('./img/share.png')} resizeMode={'contain'}/>
               <Text style={styles.text}>推荐</Text>
             </TouchableOpacity>
           </View>

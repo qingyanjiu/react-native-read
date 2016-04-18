@@ -69184,7 +69184,7 @@ subContent=
 React.createElement(Swiper,{style:styles.secondSwiper,height:Dimensions.get('window').height/2,horizontal:false,autoplay:false,loop:false,
 onMomentumScrollEnd:this._scrollControl,index:this.state.controlIndex},
 React.createElement(View,{style:styles.slide1},
-React.createElement(TouchableOpacity,{style:{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(219,188,86,0.8)',borderRadius:25}},
+React.createElement(TouchableOpacity,{style:{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(45,188,86,0.8)',borderRadius:25}},
 React.createElement(Image,{style:{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'},
 source:require(552 /* ./img/start.png */),resizeMode:'contain'}),
 React.createElement(Text,{style:styles.text},'启读'))),
@@ -69193,28 +69193,28 @@ React.createElement(Text,{style:styles.text},'启读'))),
 React.createElement(View,{style:styles.slide2},
 React.createElement(TouchableOpacity,{style:{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(119,188,86,0.8)',borderRadius:25}},
 React.createElement(Image,{style:{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'},
-source:require(552 /* ./img/start.png */),resizeMode:'contain'}),
+source:require(560 /* ./img/tag.png */),resizeMode:'contain'}),
 React.createElement(Text,{style:styles.text},'书签'))),
 
 
 React.createElement(View,{style:styles.slide3},
 React.createElement(TouchableOpacity,{style:{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(219,86,86,0.8)',borderRadius:25}},
 React.createElement(Image,{style:{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'},
-source:require(552 /* ./img/start.png */),resizeMode:'contain'}),
+source:require(561 /* ./img/comment.png */),resizeMode:'contain'}),
 React.createElement(Text,{style:styles.text},'书评'))),
 
 
 React.createElement(View,{style:styles.slide4},
 React.createElement(TouchableOpacity,{style:{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(19,188,167,0.8)',borderRadius:25}},
 React.createElement(Image,{style:{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'},
-source:require(552 /* ./img/start.png */),resizeMode:'contain'}),
+source:require(562 /* ./img/complete.png */),resizeMode:'contain'}),
 React.createElement(Text,{style:styles.text},'毕读'))),
 
 
 React.createElement(View,{style:styles.slide5},
 React.createElement(TouchableOpacity,{style:{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(111,88,67,0.8)',borderRadius:25}},
 React.createElement(Image,{style:{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'},
-source:require(552 /* ./img/start.png */),resizeMode:'contain'}),
+source:require(563 /* ./img/share.png */),resizeMode:'contain'}),
 React.createElement(Text,{style:styles.text},'推荐'))));}
 
 
@@ -69963,6 +69963,14 @@ var sessid=sess[0].id;
 callback(sessid);}};
 });
 __d(552 /* reading/img/start.png */, function(global, require, module, exports) {module.exports = require(332 /* react-native/Libraries/Image/AssetRegistry */).registerAsset({"__packager_asset":true,"fileSystemLocation":"/Users/apple/coding/reading/img","httpServerLocation":"/assets/img","width":179,"height":127,"scales":[1],"files":["/Users/apple/coding/reading/img/start.png"],"hash":"c260fe1258f2a4d7a001647e35608c2f","name":"start","type":"png"});
+});
+__d(560 /* reading/img/tag.png */, function(global, require, module, exports) {module.exports = require(332 /* react-native/Libraries/Image/AssetRegistry */).registerAsset({"__packager_asset":true,"fileSystemLocation":"/Users/apple/coding/reading/img","httpServerLocation":"/assets/img","width":36,"height":72,"scales":[1],"files":["/Users/apple/coding/reading/img/tag.png"],"hash":"863366bdd8644f27f35c4eb209b0b9f2","name":"tag","type":"png"});
+});
+__d(561 /* reading/img/comment.png */, function(global, require, module, exports) {module.exports = require(332 /* react-native/Libraries/Image/AssetRegistry */).registerAsset({"__packager_asset":true,"fileSystemLocation":"/Users/apple/coding/reading/img","httpServerLocation":"/assets/img","width":110,"height":126,"scales":[1],"files":["/Users/apple/coding/reading/img/comment.png"],"hash":"863366bdd8644f27f35c4eb209b0b9f2","name":"comment","type":"png"});
+});
+__d(562 /* reading/img/complete.png */, function(global, require, module, exports) {module.exports = require(332 /* react-native/Libraries/Image/AssetRegistry */).registerAsset({"__packager_asset":true,"fileSystemLocation":"/Users/apple/coding/reading/img","httpServerLocation":"/assets/img","width":109,"height":127,"scales":[1],"files":["/Users/apple/coding/reading/img/complete.png"],"hash":"863366bdd8644f27f35c4eb209b0b9f2","name":"complete","type":"png"});
+});
+__d(563 /* reading/img/share.png */, function(global, require, module, exports) {module.exports = require(332 /* react-native/Libraries/Image/AssetRegistry */).registerAsset({"__packager_asset":true,"fileSystemLocation":"/Users/apple/coding/reading/img","httpServerLocation":"/assets/img","width":158,"height":127,"scales":[1],"files":["/Users/apple/coding/reading/img/share.png"],"hash":"863366bdd8644f27f35c4eb209b0b9f2","name":"share","type":"png"});
 });
 __d(553 /* reading/img/head_icon_scan.png */, function(global, require, module, exports) {module.exports = require(332 /* react-native/Libraries/Image/AssetRegistry */).registerAsset({"__packager_asset":true,"fileSystemLocation":"/Users/apple/coding/reading/img","httpServerLocation":"/assets/img","width":72,"height":72,"scales":[1],"files":["/Users/apple/coding/reading/img/head_icon_scan.png"],"hash":"3354dc3f2cf85d83963ac32e921d86ba","name":"head_icon_scan","type":"png"});
 });

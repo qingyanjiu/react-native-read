@@ -189,35 +189,35 @@ var ReadMain = React.createClass({
           <View style={styles.slide1}>
             <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(45,188,86,0.8)',borderRadius:25}}>
               <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
-                source={require('./img/start.png')} resizeMode={'contain'}/>
+                source={require('../img/start.png')} resizeMode={'contain'}/>
               <Text style={styles.text}>启读</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.slide2}>
             <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(119,188,86,0.8)',borderRadius:25}}>
               <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
-                source={require('./img/tag.png')} resizeMode={'contain'}/>
+                source={require('../img/tag.png')} resizeMode={'contain'}/>
               <Text style={styles.text}>书签</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.slide3}>
             <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(219,86,86,0.8)',borderRadius:25}}>
               <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
-                source={require('./img/comment.png')} resizeMode={'contain'}/>
+                source={require('../img/comment.png')} resizeMode={'contain'}/>
               <Text style={styles.text}>书评</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.slide4}>
             <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(19,188,167,0.8)',borderRadius:25}}>
               <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
-                source={require('./img/complete.png')} resizeMode={'contain'}/>
+                source={require('../img/complete.png')} resizeMode={'contain'}/>
               <Text style={styles.text}>毕读</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.slide5}>
             <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(111,88,67,0.8)',borderRadius:25}}>
               <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
-                source={require('./img/share.png')} resizeMode={'contain'}/>
+                source={require('../img/share.png')} resizeMode={'contain'}/>
               <Text style={styles.text}>推荐</Text>
             </TouchableOpacity>
           </View>
@@ -257,13 +257,13 @@ var ReadMain = React.createClass({
       <View style={ styles.header }>
         <View style={styles.headerLeftMenu}>
             <TouchableOpacity><Image style={styles.headerImg}
-              source={require('./img/head_icon_scan.png')} resizeMode={'contain'}/>
+              source={require('../img/head_icon_scan.png')} resizeMode={'contain'}/>
             </TouchableOpacity>
           </View>
-        <Image style={{height:20,marginBottom:12}} source={require('./img/logo.png')} resizeMode={'contain'}/>
+        <Image style={{height:20,marginBottom:12}} source={require('../img/logo.png')} resizeMode={'contain'}/>
         <View style={styles.headerRightMenu}>
             <TouchableOpacity onPress={this.props.openModalCallBack}><Image style={styles.headerImg}
-              source={require('./img/head_icon_share.png')} resizeMode={'contain'}/>
+              source={require('../img/head_icon_share.png')} resizeMode={'contain'}/>
             </TouchableOpacity>
           </View>
       </View>
@@ -277,28 +277,28 @@ var ReadMain = React.createClass({
       <View style={ styles.footer }>
           <View style={styles.footerItem}>
             <TouchableOpacity style={styles.footerMenu}>
-              <Image style={styles.footerImg} source={require('./img/foot_icon_home.png')}>
+              <Image style={styles.footerImg} source={require('../img/foot_icon_home.png')}>
               </Image>
               {/*<Text style={{fontSize:10,paddingTop:4,color:'#FFFFFF'}}>乐读主页</Text>*/}
             </TouchableOpacity>
           </View>
           <View style={styles.footerItem}>
             <TouchableOpacity style={styles.footerMenu}>
-              <Image style={styles.footerImg} source={require('./img/foot_icon_search.png')}>
+              <Image style={styles.footerImg} source={require('../img/foot_icon_search.png')}>
               </Image>
               {/*<Text style={{fontSize:10,paddingTop:4,color:'#FFFFFF'}}>查找书籍</Text>*/}
             </TouchableOpacity>
           </View>
           <View style={styles.footerItem}>
             <TouchableOpacity onPress={this.props.openModalCallBack} style={styles.footerMenu}>
-              <Image style={styles.footerImg} source={require('./img/foot_icon_plan.png')}>
+              <Image style={styles.footerImg} source={require('../img/foot_icon_plan.png')}>
               </Image>
               {/*<Text style={{fontSize:10,paddingTop:4,color:'#FFFFFF'}}>乐读计划</Text>*/}
             </TouchableOpacity>
           </View>
           <View style={styles.footerItem}>
             <TouchableOpacity onPress={this.props.openModalCallBack} style={styles.footerMenu}>
-              <Image style={styles.footerImg} source={require('./img/foot_icon_history.png')}>
+              <Image style={styles.footerImg} source={require('../img/foot_icon_history.png')}>
               </Image>
               {/*<Text style={{fontSize:10,paddingTop:4,color:'#FFFFFF'}}>乐读历史</Text>*/}
             </TouchableOpacity>

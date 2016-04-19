@@ -8,9 +8,8 @@ var React = require('react-native');
 // var TimerMixin = require('react-timer-mixin');
 var Dimensions = require('Dimensions');
 
-var Login = require('./loginIOS');
-var Main = require('./ReadMain');
-var Ma = require('./Ma');
+var Login = require('./readPage/loginIOS');
+var Main = require('./readPage/ReadMain');
 
 
 var {
@@ -35,9 +34,6 @@ var reading = React.createClass({
           break;
         case 1:
           Component = Main;
-          break;
-        case 2:
-          Component = Ma;
           break;
         default: //default view
           Component = Main;

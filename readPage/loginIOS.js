@@ -128,12 +128,12 @@ var loginIOS = React.createClass({
     var content;
     if(this.state.logging === 1)
       content =
-      <Image style={styles.imageLoading} source={require('./img/login_back.jpg')} resizeMode={'stretch'}>
+      <Image style={styles.imageLoading} source={require('../img/login_back.jpg')} resizeMode={'stretch'}>
         <Loading txt={'正在登录...'}></Loading> 
       </Image>;
     else if(this.state.logging === 0)
       content =
-      <Image style={styles.image} source={require('./img/login_back.jpg')} resizeMode={'stretch'}>
+      <Image style={styles.image} source={require('../img/login_back.jpg')} resizeMode={'stretch'}>
         <TextInput style={styles.inputs} placeholder={'请输入用户名'} textAlign={'center'} onChangeText={(text) => this.setState({username:text})} value={this.state.username}> 
         </TextInput>
         <TextInput style={styles.inputs} placeholder={'请输入密码'} textAlign={'center'} password={true} onChangeText={(text) => this.setState({password:text})} value={this.state.password}>

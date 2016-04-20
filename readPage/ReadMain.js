@@ -173,71 +173,96 @@ var ReadMain = React.createClass({
     for(let i=0;i<bookPlan.length;i++){
       planBooks.push(
           <View key={bookPlan[i].douban_id} style={styles.slide} title={<Text numberOfLines={1}></Text>}>
-            <Image style={styles.image} source={{uri: bookPlan[i].image_url}} resizeMode={'contain'} >
+            <Image style={styles.image} source={{uri: bookPlan[i].image_url}} >
             </Image>
+            
+            <View style={styles.imageButtonView}> 
+              <TouchableOpacity style={[styles.imageButton,{backgroundColor:'rgba(45,188,86,0.8)',}]}>
+                <Text style={styles.text}>启读</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={[styles.imageButton,{backgroundColor:'rgba(119,188,86,0.8)',}]}>
+                <Text style={styles.text}>书签</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={[styles.imageButton,{backgroundColor:'rgba(219,86,86,0.8)',}]}>
+                <Text style={styles.text}>书评</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={[styles.imageButton,{backgroundColor:'rgba(19,188,167,0.8)',}]}>
+                <Text style={styles.text}>毕读</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={[styles.imageButton,{backgroundColor:'rgba(111,88,67,0.8)',}]}>
+                <Text style={styles.text}>推荐</Text>
+              </TouchableOpacity>
+            </View>
           </View>
+
         );
     }
 
 
     //操作列表
-    var subContent;
-    if(this.state.bookPlan.length > 0){
-      subContent=(
-        <Swiper style={styles.secondSwiper} height={Dimensions.get('window').height/2} horizontal={true} autoplay={false} loop={false} 
-          index={this.state.controlIndex} onMomentumScrollEnd = {this._scrollControl}>
-          <View style={styles.slide1}>
-            <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(45,188,86,0.8)',borderRadius:25}}>
-              <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
-                source={require('../img/start.png')} resizeMode={'contain'}/>
-              <Text style={styles.text}>启读</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.slide2}>
-            <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(119,188,86,0.8)',borderRadius:25}}>
-              <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
-                source={require('../img/tag.png')} resizeMode={'contain'}/>
-              <Text style={styles.text}>书签</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.slide3}>
-            <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(219,86,86,0.8)',borderRadius:25}}>
-              <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
-                source={require('../img/comment.png')} resizeMode={'contain'}/>
-              <Text style={styles.text}>书评</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.slide4}>
-            <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(19,188,167,0.8)',borderRadius:25}}>
-              <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
-                source={require('../img/complete.png')} resizeMode={'contain'}/>
-              <Text style={styles.text}>毕读</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.slide5}>
-            <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(111,88,67,0.8)',borderRadius:25}}>
-              <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
-                source={require('../img/share.png')} resizeMode={'contain'}/>
-              <Text style={styles.text}>推荐</Text>
-            </TouchableOpacity>
-          </View>
-        </Swiper>
-      );
-    }
+    // var subContent;
+    // if(this.state.bookPlan.length > 0){
+    //   subContent=(
+    //     <Swiper style={styles.secondSwiper} height={Dimensions.get('window').height/2} horizontal={true} autoplay={false} loop={false} 
+    //       index={this.state.controlIndex} onMomentumScrollEnd = {this._scrollControl}>
+    //       <View style={styles.slide1}>
+    //         <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(45,188,86,0.8)',borderRadius:25}}>
+    //           <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
+    //             source={require('../img/start.png')} resizeMode={'contain'}/>
+    //           <Text style={styles.text}>启读</Text>
+    //         </TouchableOpacity>
+    //       </View>
+    //       <View style={styles.slide2}>
+    //         <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(119,188,86,0.8)',borderRadius:25}}>
+    //           <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
+    //             source={require('../img/tag.png')} resizeMode={'contain'}/>
+    //           <Text style={styles.text}>书签</Text>
+    //         </TouchableOpacity>
+    //       </View>
+    //       <View style={styles.slide3}>
+    //         <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(219,86,86,0.8)',borderRadius:25}}>
+    //           <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
+    //             source={require('../img/comment.png')} resizeMode={'contain'}/>
+    //           <Text style={styles.text}>书评</Text>
+    //         </TouchableOpacity>
+    //       </View>
+    //       <View style={styles.slide4}>
+    //         <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(19,188,167,0.8)',borderRadius:25}}>
+    //           <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
+    //             source={require('../img/complete.png')} resizeMode={'contain'}/>
+    //           <Text style={styles.text}>毕读</Text>
+    //         </TouchableOpacity>
+    //       </View>
+    //       <View style={styles.slide5}>
+    //         <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(111,88,67,0.8)',borderRadius:25}}>
+    //           <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
+    //             source={require('../img/share.png')} resizeMode={'contain'}/>
+    //           <Text style={styles.text}>推荐</Text>
+    //         </TouchableOpacity>
+    //       </View>
+    //     </Swiper>
+    //   );
+    // }
 
     {/*loop一定要为false否则index设置不起效果，2的一比*/}
     var content;
     if(this.state.bookPlan.length > 0){
       content = (
-        <View>
-        <Swiper style={styles.wrapper} height={Dimensions.get('window').height/2-120} index={this.state.bookIndex}
+        <View style={{backgroundColor: 'rgba(219,188,86,0.1)'}}> 
+        <Swiper style={styles.wrapper} height={Dimensions.get('window').height-120} index={this.state.bookIndex}
           renderPagination={this.renderPagination} onMomentumScrollEnd = {this._onMomentumScrollEnd}
           paginationStyle={{
             bottom: -23, left: null, right: 10,
           }} loop={false}> 
           {planBooks}
         </Swiper>
-        {subContent}
+
+
+
         </View>
         );
       }
@@ -252,7 +277,7 @@ var ReadMain = React.createClass({
       }
 
    return (
-    <View style={{flex:1,justifyContent:'center',}}>
+    <View style={{flex:1}}>
 
       <View style={ styles.header }>
         <View style={styles.headerLeftMenu}>
@@ -368,25 +393,39 @@ var styles = StyleSheet.create({
   },
 
   wrapper: {
-    marginBottom:1,
-    backgroundColor: 'rgba(219,188,86,0.1)',
   },
   slide: {
     flex: 1,
-    justifyContent: 'center',
+    flexDirection:'row',
     backgroundColor: 'transparent',
+    paddingTop:20,
+    paddingBottom:20,
+    paddingLeft:6 
+    // marginLeft: ((Dimensions.get('window').height-120)/Dimensions.get('window').height * Dimensions.get('window').width - Dimensions.get('window').width)/2
   },
   text: {
     color: '#fff',
-    fontSize: 20,
     fontWeight: 'bold',
   },
   image: {
-    flex: 1,
+    height:Dimensions.get('window').height-160,
+    width:(Dimensions.get('window').height-160)/Dimensions.get('window').height * Dimensions.get('window').width,
+  },
+  imageButtonView:{
+    flexDirection:'column',
+    marginTop:12,
+  },
+  imageButton:{
+    flex:1,
+    width:Dimensions.get('window').width - (Dimensions.get('window').height-160)/Dimensions.get('window').height * Dimensions.get('window').width - 6 - 6,
+    marginBottom:12,
+    justifyContent:'center',
+    alignItems:'center'
   },
 
   secondSwiper:{
   },
+
   slide1: {
     flex: 1,
     justifyContent: 'center',

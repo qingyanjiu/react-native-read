@@ -398,8 +398,8 @@ var styles = StyleSheet.create({
     flex: 1,
     flexDirection:'row',
     backgroundColor: 'transparent',
-    paddingTop:20,
-    paddingBottom:20,
+    paddingTop:50,
+    paddingBottom:50,
     paddingLeft:6 
     // marginLeft: ((Dimensions.get('window').height-120)/Dimensions.get('window').height * Dimensions.get('window').width - Dimensions.get('window').width)/2
   },
@@ -408,8 +408,9 @@ var styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   image: {
-    height:Dimensions.get('window').height-160,
-    width:(Dimensions.get('window').height-160)/Dimensions.get('window').height * Dimensions.get('window').width,
+    height:Dimensions.get('window').height-220,
+    // width:(Dimensions.get('window').height-160)/Dimensions.get('window').height * Dimensions.get('window').width,
+    width:(Dimensions.get('window').height-220)*2/3,
   },
   imageButtonView:{
     flexDirection:'column',
@@ -417,7 +418,8 @@ var styles = StyleSheet.create({
   },
   imageButton:{
     flex:1,
-    width:Dimensions.get('window').width - (Dimensions.get('window').height-160)/Dimensions.get('window').height * Dimensions.get('window').width - 6 - 6,
+    // width:Dimensions.get('window').width - (Dimensions.get('window').height-160)/Dimensions.get('window').height * Dimensions.get('window').width - 6 - 6,
+    width:Dimensions.get('window').width - (Dimensions.get('window').height-220)*2/3 - 6 - 6,
     marginBottom:12,
     justifyContent:'center',
     alignItems:'center'

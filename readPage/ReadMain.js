@@ -24,15 +24,16 @@ var {
 
 var sessid;
 
-// //swiper控件有bug，如果滑动后用state更新bookIndex（当前选中书籍编号）的话会导致图片显示出问题，于是放到外面来控制
-// var bookIndex = 0;
+var screenWidth = Dimensions.get('window').width;
+var screenHeight = Dimensions.get('window').height;
 
 var ReadMain = React.createClass({
 
   getInitialState:function(){
     return({
+      modalVisible:false,
       //已选择的菜单id,判断是否存在，如果不存在 说明是第一次进来，设置为1
-      menuSelectedId:this.props.router.passProps.menuSelectedId ? this.props.router.passProps.menuSelectedId:'1',
+      menuSelectedId:'0',
       bookIndex:0,
       controlIndex:0,
       bookPlan:[], //查询到的在当前用户阅读计划中的书籍列表，默认是空的 book列表
@@ -181,11 +182,11 @@ var ReadMain = React.createClass({
                 <Text style={styles.text}>启读</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={[styles.imageButton,{backgroundColor:'rgba(119,188,86,0.8)',}]}>
+              <TouchableOpacity style={[styles.imageButton,{backgroundColor:'rgba(119,188,86,0.8)',}]} onPress={()=>{this.setState({menuSelectedId:'2',modalVisible:true});}}>
                 <Text style={styles.text}>书签</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={[styles.imageButton,{backgroundColor:'rgba(219,86,86,0.8)',}]}>
+              <TouchableOpacity style={[styles.imageButton,{backgroundColor:'rgba(219,86,86,0.8)',}]} onPress={()=>{this.setState({menuSelectedId:'3',modalVisible:true});}}>
                 <Text style={styles.text}>书评</Text>
               </TouchableOpacity>
 
@@ -193,7 +194,7 @@ var ReadMain = React.createClass({
                 <Text style={styles.text}>毕读</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={[styles.imageButton,{backgroundColor:'rgba(111,88,67,0.8)',}]}>
+              <TouchableOpacity style={[styles.imageButton,{backgroundColor:'rgba(111,88,67,0.8)',}]} onPress={()=>{this.setState({menuSelectedId:'5',modalVisible:true});}}>
                 <Text style={styles.text}>推荐</Text>
               </TouchableOpacity>
             </View>
@@ -203,57 +204,12 @@ var ReadMain = React.createClass({
     }
 
 
-    //操作列表
-    // var subContent;
-    // if(this.state.bookPlan.length > 0){
-    //   subContent=(
-    //     <Swiper style={styles.secondSwiper} height={Dimensions.get('window').height/2} horizontal={true} autoplay={false} loop={false} 
-    //       index={this.state.controlIndex} onMomentumScrollEnd = {this._scrollControl}>
-    //       <View style={styles.slide1}>
-    //         <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(45,188,86,0.8)',borderRadius:25}}>
-    //           <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
-    //             source={require('../img/start.png')} resizeMode={'contain'}/>
-    //           <Text style={styles.text}>启读</Text>
-    //         </TouchableOpacity>
-    //       </View>
-    //       <View style={styles.slide2}>
-    //         <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(119,188,86,0.8)',borderRadius:25}}>
-    //           <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
-    //             source={require('../img/tag.png')} resizeMode={'contain'}/>
-    //           <Text style={styles.text}>书签</Text>
-    //         </TouchableOpacity>
-    //       </View>
-    //       <View style={styles.slide3}>
-    //         <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(219,86,86,0.8)',borderRadius:25}}>
-    //           <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
-    //             source={require('../img/comment.png')} resizeMode={'contain'}/>
-    //           <Text style={styles.text}>书评</Text>
-    //         </TouchableOpacity>
-    //       </View>
-    //       <View style={styles.slide4}>
-    //         <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(19,188,167,0.8)',borderRadius:25}}>
-    //           <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
-    //             source={require('../img/complete.png')} resizeMode={'contain'}/>
-    //           <Text style={styles.text}>毕读</Text>
-    //         </TouchableOpacity>
-    //       </View>
-    //       <View style={styles.slide5}>
-    //         <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(111,88,67,0.8)',borderRadius:25}}>
-    //           <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
-    //             source={require('../img/share.png')} resizeMode={'contain'}/>
-    //           <Text style={styles.text}>推荐</Text>
-    //         </TouchableOpacity>
-    //       </View>
-    //     </Swiper>
-    //   );
-    // }
-
     {/*loop一定要为false否则index设置不起效果，2的一比*/}
     var content;
     if(this.state.bookPlan.length > 0){
       content = (
         <View style={{backgroundColor: 'rgba(219,188,86,0.1)'}}> 
-        <Swiper style={styles.wrapper} height={Dimensions.get('window').height-120} index={this.state.bookIndex}
+        <Swiper style={styles.wrapper} height={screenHeight-120} index={this.state.bookIndex}
           renderPagination={this.renderPagination} onMomentumScrollEnd = {this._onMomentumScrollEnd}
           paginationStyle={{
             bottom: -23, left: null, right: 10,
@@ -276,6 +232,66 @@ var ReadMain = React.createClass({
           );
       }
 
+    //弹出框内容
+    var modalView;
+
+    if(this.state.menuSelectedId === '0')
+      modalView = (<View></View>);
+    else if(this.state.menuSelectedId === '2'){
+      modalView = 
+        <View style={styles.slide2}>
+            <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(119,188,86,0.8)',borderRadius:25}}>
+              <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
+                source={require('../img/tag.png')} resizeMode={'contain'}/>
+              <Text style={styles.text}>书签</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{backgroundColor:'#FFFFFF',width:60,height:60,borderRadius:30,alignItems:'center',
+              justifyContent:'center',bottom:10,left:screenWidth/2-30,position:'absolute'}} onPress={()=>{this.setState({modalVisible:false,menuSelectedId:0});}}>
+              <Text>关闭</Text>
+            </TouchableOpacity>
+        </View>
+      }
+      else if(this.state.menuSelectedId === '3'){
+      modalView = 
+        <View style={styles.slide3}>
+            <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(197,86,86,0.8)',borderRadius:25}}>
+              <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
+                source={require('../img/comment.png')} resizeMode={'contain'}/>
+              <Text style={styles.text}>书评</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{backgroundColor:'#FFFFFF',width:60,height:60,borderRadius:30,alignItems:'center',
+              justifyContent:'center',bottom:10,left:screenWidth/2-30,position:'absolute'}} onPress={()=>{this.setState({modalVisible:false,menuSelectedId:0});}}>
+              <Text>关闭</Text>
+            </TouchableOpacity>
+        </View>
+      }
+      else if(this.state.menuSelectedId === '5'){
+      modalView = 
+        <View style={styles.slide5}>
+            <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(111,88,67,0.8)',borderRadius:25}}>
+              <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
+                source={require('../img/share.png')} resizeMode={'contain'}/>
+              <Text style={styles.text}>推荐</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{backgroundColor:'#FFFFFF',width:60,height:60,borderRadius:30,alignItems:'center',
+              justifyContent:'center',bottom:10,left:screenWidth/2-30,position:'absolute'}} onPress={()=>{this.setState({modalVisible:false,menuSelectedId:0});}}>
+              <Text>关闭</Text>
+            </TouchableOpacity>
+        </View>
+      }
+  
+    //弹出框
+    var modal;
+    modal=
+      <Modal
+          animated={true}
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {this._setModalVisible(false)}}
+          > 
+          {modalView}
+      </Modal>;
+
    return (
     <View style={{flex:1}}>
 
@@ -286,6 +302,7 @@ var ReadMain = React.createClass({
             </TouchableOpacity>
           </View>
         <Image style={{height:20,marginBottom:12}} source={require('../img/logo.png')} resizeMode={'contain'}/>
+
         <View style={styles.headerRightMenu}>
             <TouchableOpacity onPress={this.props.openModalCallBack}><Image style={styles.headerImg}
               source={require('../img/head_icon_share.png')} resizeMode={'contain'}/>
@@ -295,6 +312,7 @@ var ReadMain = React.createClass({
 
 
       <View style={styles.container}>
+        {modal}
         {content}
 
       </View>
@@ -401,16 +419,16 @@ var styles = StyleSheet.create({
     paddingTop:50,
     paddingBottom:50,
     paddingLeft:6 
-    // marginLeft: ((Dimensions.get('window').height-120)/Dimensions.get('window').height * Dimensions.get('window').width - Dimensions.get('window').width)/2
+    // marginLeft: ((screenHeight-120)/screenHeight * screenWidth - screenWidth)/2
   },
   text: {
     color: '#fff',
     fontWeight: 'bold',
   },
   image: {
-    height:Dimensions.get('window').height-220,
-    // width:(Dimensions.get('window').height-160)/Dimensions.get('window').height * Dimensions.get('window').width,
-    width:(Dimensions.get('window').height-220)*2/3,
+    height:screenHeight-220,
+    // width:(screenHeight-160)/screenHeight * screenWidth,
+    width:(screenHeight-220)*2/3,
   },
   imageButtonView:{
     flexDirection:'column',
@@ -418,8 +436,8 @@ var styles = StyleSheet.create({
   },
   imageButton:{
     flex:1,
-    // width:Dimensions.get('window').width - (Dimensions.get('window').height-160)/Dimensions.get('window').height * Dimensions.get('window').width - 6 - 6,
-    width:Dimensions.get('window').width - (Dimensions.get('window').height-220)*2/3 - 6 - 6,
+    // width:screenWidth - (screenHeight-160)/screenHeight * screenWidth - 6 - 6,
+    width:screenWidth - (screenHeight-220)*2/3 - 6 - 6,
     marginBottom:12,
     justifyContent:'center',
     alignItems:'center'
@@ -432,31 +450,31 @@ var styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(153,204,0,0.4)',
+    backgroundColor: 'rgba(153,204,0,1)',
   },
   slide2: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(153,204,255,0.4)',
+    backgroundColor: 'rgba(153,204,255,1)',
   },
   slide3: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(250,128,114,0.4)',
+    backgroundColor: 'rgba(250,128,114,1)',
   },
   slide4: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(143,188,143,0.4)',
+    backgroundColor: 'rgba(143,188,143,1)',
   },
   slide5: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,105,180,0.4)',
+    backgroundColor: 'rgba(255,105,180,1)',
   }
 });
 

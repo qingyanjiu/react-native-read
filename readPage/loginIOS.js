@@ -173,23 +173,23 @@ var styles = StyleSheet.create({
     opacity:0.4
   },
   inputs: {
-    height:20*PixelRatio.get(),
+    height:40,
     width:Dimensions.get('window').width*3/4,
     backgroundColor: 'rgba(255,255,255,0.6)',
     borderWidth: 0,
     borderColor: '#DDDDDD',
-    borderRadius:22,
+    borderRadius:20,
     marginBottom:10,
     alignSelf: 'center',
   },
   button: {
-    height:20*PixelRatio.get(),
+    height:40,
     width:Dimensions.get('window').width*2/3,
     backgroundColor: '#48BBEC',
     borderColor: '#48BBEC',
     borderWidth: 1,
     marginTop:6,
-    borderRadius: 22,
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
   }

@@ -327,11 +327,12 @@ var ReadSearch = React.createClass({
     content = (
       <GiftedListView
           rowView={this._renderRowView}
+          enableEmptySections={true}
           
           onFetch={this._onFetch}
           initialListSize={10} // the maximum number of rows displayable without scrolling (height of the listview / height of row)
 
-          firstLoader={false} // display a loader for the first fetching
+          firstLoader={true} // display a loader for the first fetching
       
           pagination={true} // enable infinite scrolling using touch to load more
           paginationFetchigView={this._renderPaginationFetchigView}

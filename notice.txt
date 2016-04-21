@@ -1,0 +1,11 @@
+updateSrc文件夹中包含的文件是我改过源码的文件，文件名是路径。
+1）node_modules/react-native-gifted-listview/GiftedListView  这个通过增加
+
+componentWillReceiveProps(nextProps) {
+      this.props.onFetch(this._getPage(), this._postRefresh, {firstLoad: false})
+  },
+
+这一行代码实现了查询新的字符串刷新列表的功能。原功能输入新查询字符串后点击查询没反应，要手动刷新。
+
+2）node_modules/react-native-swiper/dist/index 这个修改了swiper的问题，还是慢，懒得记了
+如果迁移项目时，需要npm install 后再将这两个文件替换掉

@@ -110,11 +110,9 @@ var ReadSearch = React.createClass({
           } else {
             callback(rows);
           }
-          this.setState({modalVisible:false});
           })
           .catch((error) => {
             alert("获取书籍失败，请重试");
-            this.setState({modalVisible:false});
           });  
     },
 
@@ -292,7 +290,6 @@ var ReadSearch = React.createClass({
     );
   },
 
-
   render: function() {
 
   //弹出框内容
@@ -303,7 +300,7 @@ var ReadSearch = React.createClass({
           <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
             <TextInput style={styles.inputs} placeholder={'请输入书名'} textAlign={'center'} onChangeText={(text) => this.setState({text:text})} value={this.state.text}> 
             </TextInput>
-            <TouchableOpacity style={styles.button} onPress={()=>{this.setState({searchText:this.state.text});}}>
+            <TouchableOpacity style={styles.button} onPress={()=>{this.setState({searchText:this.state.text,modalVisible:false});}}>
               <Image source={require('../img/search.png')} style={{width:26,height:30,tintColor:'rgba(255,255,255,0.6)'}} resizeMode={'contain'}/>
             </TouchableOpacity>
           </View>
@@ -334,14 +331,14 @@ var ReadSearch = React.createClass({
           onFetch={this._onFetch}
           initialListSize={10} // the maximum number of rows displayable without scrolling (height of the listview / height of row)
 
-          firstLoader={true} // display a loader for the first fetching
+          firstLoader={false} // display a loader for the first fetching
       
           pagination={true} // enable infinite scrolling using touch to load more
           paginationFetchigView={this._renderPaginationFetchigView}
           paginationAllLoadedView={this._renderPaginationAllLoadedView}
           paginationWaitingView={this._renderPaginationWaitingView}
 
-          refreshable={true} // enable pull-to-refresh for iOS and touch-to-refresh for Android
+          refreshable={false} // enable pull-to-refresh for iOS and touch-to-refresh for Android
           refreshableViewHeight={50} // correct height is mandatory
           refreshableDistance={200} // the distance to trigger the pull-to-refresh - better to have it lower than refreshableViewHeight
           refreshableFetchingView={this._renderRefreshableFetchingView}

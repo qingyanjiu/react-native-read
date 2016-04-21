@@ -372,7 +372,9 @@ var ReadSearch = React.createClass({
             </View>
 
           <TouchableOpacity onPress={()=>{this.setState({modalVisible:true});}}>
-            <Image style={{height:20,marginBottom:12}} source={require('../img/logo.png')} resizeMode={'contain'}/>
+            <View style={[styles.inputs,{marginBottom:6,width:160,height:26,borderRadius:13,justifyContent:'center',alignItems:'flex-end',borderWidth:2,borderColor:'rgba(255,255,255,0.8)'}]} textAlign={'center'} onChangeText={(text) => this.setState({text:text})} value={this.state.text}> 
+              <Image source={require('../img/search.png')} style={{width:18,height:22,tintColor:'rgba(219,188,86,1)',marginRight:6}} resizeMode={'contain'}/>
+            </View>
           </TouchableOpacity>
 
           <View style={styles.headerRightMenu}>

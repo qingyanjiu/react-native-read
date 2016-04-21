@@ -96,7 +96,7 @@ var ReadSearch = React.createClass({
                 'sessionid':sessid,
                 'type':'ios',
                 'text':this.state.searchText,
-                'page': this.state.page
+                'page': page
             })
         })
         //这里不用转换，根据后台返回的值来定
@@ -300,7 +300,7 @@ var ReadSearch = React.createClass({
           <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
             <TextInput style={styles.inputs} placeholder={'请输入书名'} textAlign={'center'} onChangeText={(text) => this.setState({text:text})} value={this.state.text}> 
             </TextInput>
-            <TouchableOpacity style={styles.button} onPress={()=>{this.setState({searchText:this.state.text,modalVisible:false,page:1});}}>
+            <TouchableOpacity style={styles.button} onPress={()=>{this.setState({searchText:this.state.text,modalVisible:false});}}>
               <Image source={require('../img/search.png')} style={{width:26,height:30,tintColor:'rgba(255,255,255,0.6)'}} resizeMode={'contain'}/>
             </TouchableOpacity>
           </View>

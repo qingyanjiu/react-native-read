@@ -2,7 +2,7 @@ var Constants = {
   //服务器url
   URL : 'http://alaien-book.daoapp.io',
 
-  // URL : 'https://ntizyc-3000-jucckb.box.myide.io',
+  // URL : 'https://ntizyc-3000-srvqkj.box.myide.io',
 
   
 };

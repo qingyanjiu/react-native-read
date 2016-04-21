@@ -10,6 +10,7 @@ var Dimensions = require('Dimensions');
 
 var Login = require('./readPage/loginIOS');
 var Main = require('./readPage/ReadMain');
+var Search = require('./readPage/ReadSearch');
 
 
 var {
@@ -34,6 +35,9 @@ var reading = React.createClass({
           break;
         case 1:
           Component = Main;
+          break;
+        case 2:
+          Component = Search;
           break;
         default: //default view
           Component = Main;

@@ -7,6 +7,7 @@ var Swiper = require('react-native-swiper')
 
 var Constants = require('./Constants');
 var Utils = require('./Utils');
+var ReadFoot = require('./ReadFoot');
 
 var {
   Image,
@@ -33,7 +34,7 @@ var ReadMain = React.createClass({
     return({
       modalVisible:false,
       //已选择的菜单id,判断是否存在，如果不存在 说明是第一次进来，设置为1
-      menuSelectedId:'0',
+      menuSelectedId:1,
       bookIndex:0,
       controlIndex:0,
       bookPlan:[], //查询到的在当前用户阅读计划中的书籍列表，默认是空的 book列表
@@ -84,29 +85,19 @@ var ReadMain = React.createClass({
       });
   },
 
-
-  onMenuClickCallBack:function(args){
-    // alert(
-    //   args.id
-    // );
-
-    this.props.navigator.replace({
-      name: 'Main',
-      id: 1,          
-      //跳转到main页面（routeid为1） 然后传递最新点击的菜单id过去选中，同时菜单id也决定页面中显示内容的不同 render方法中做判断
-      passProps:{
-        menuSelectedId:args.id
-      },
-    });
+  //点击菜单选择相应页面
+  onMenuClickCallBack:function(menuId){
+      this.props.navigator.replace({
+        name: '',
+        id: menuId,          
+        //跳转到main页面（routeid为1） 然后传递最新点击的菜单id过去选中，同时菜单id也决定页面中显示内容的不同 render方法中做判断
+        passProps:{
+          menuSelectedId:menuId
+        },
+      });
   },
 
-  onClickHandler:function(){   
-      this.props.navigator.push({
-        name: 'Ma',
-        id: 2,});
-  },
-
-  //阅读计划切换书籍的时候调用
+  //切换书籍的时候调用
   renderPagination :function (index, total, context) {
     return (
       <View style={{
@@ -147,7 +138,7 @@ var ReadMain = React.createClass({
         });
       })
       .catch((error) => {
-        alert("获取阅读信息失败，请稍后再试"+error);
+        alert("获取阅读信息失败，请稍后再试");
       });
     },
 
@@ -304,7 +295,7 @@ var ReadMain = React.createClass({
         <Image style={{height:20,marginBottom:12}} source={require('../img/logo.png')} resizeMode={'contain'}/>
 
         <View style={styles.headerRightMenu}>
-            <TouchableOpacity onPress={this.props.openModalCallBack}><Image style={styles.headerImg}
+            <TouchableOpacity><Image style={styles.headerImg}
               source={require('../img/head_icon_share.png')} resizeMode={'contain'}/>
             </TouchableOpacity>
           </View>
@@ -317,36 +308,8 @@ var ReadMain = React.createClass({
 
       </View>
 
-      <View style={ styles.footer }>
-          <View style={styles.footerItem}>
-            <TouchableOpacity style={styles.footerMenu}>
-              <Image style={styles.footerImg} source={require('../img/foot_icon_home.png')}>
-              </Image>
-              {/*<Text style={{fontSize:10,paddingTop:4,color:'#FFFFFF'}}>乐读主页</Text>*/}
-            </TouchableOpacity>
-          </View>
-          <View style={styles.footerItem}>
-            <TouchableOpacity style={styles.footerMenu}>
-              <Image style={styles.footerImg} source={require('../img/foot_icon_search.png')}>
-              </Image>
-              {/*<Text style={{fontSize:10,paddingTop:4,color:'#FFFFFF'}}>查找书籍</Text>*/}
-            </TouchableOpacity>
-          </View>
-          <View style={styles.footerItem}>
-            <TouchableOpacity onPress={this.props.openModalCallBack} style={styles.footerMenu}>
-              <Image style={styles.footerImg} source={require('../img/foot_icon_plan.png')}>
-              </Image>
-              {/*<Text style={{fontSize:10,paddingTop:4,color:'#FFFFFF'}}>乐读计划</Text>*/}
-            </TouchableOpacity>
-          </View>
-          <View style={styles.footerItem}>
-            <TouchableOpacity onPress={this.props.openModalCallBack} style={styles.footerMenu}>
-              <Image style={styles.footerImg} source={require('../img/foot_icon_history.png')}>
-              </Image>
-              {/*<Text style={{fontSize:10,paddingTop:4,color:'#FFFFFF'}}>乐读历史</Text>*/}
-            </TouchableOpacity>
-          </View>
-      </View>
+      <ReadFoot callback={(menuId)=>{this.onMenuClickCallBack(menuId)}} selectedId={this.state.menuSelectedId}>
+      </ReadFoot>
 
     </View>
       );
@@ -389,26 +352,7 @@ var styles = StyleSheet.create({
     marginBottom:4,
   },
 
-  footer: {
-    height: 58,
-    backgroundColor: 'rgba(219,188,86,0.4)',
-    borderBottomWidth:0,
-    flexDirection:'row',
-    marginTop:1,
-  },
-  footerImg:{
-    width:36,
-    height:36,
-  },
-  footerItem:{
-    flex:1,
-    justifyContent:'center',
-    alignItems:'center'
-  },
-  footerMenu:{
-    flexDirection:'column',
-    alignItems:'center',
-  },
+  
 
   wrapper: {
   },

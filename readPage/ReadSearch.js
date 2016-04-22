@@ -10,7 +10,6 @@ var Utils = require('./Utils');
 var ReadFoot = require('./ReadFoot');
 
 
-
 var {
   Image,
   StyleSheet,
@@ -22,6 +21,7 @@ var {
   Text,
   StatusBar,
   Modal,
+  DatePickerIOS,
 } = React;
 
 var sessid;
@@ -30,6 +30,11 @@ var screenWidth = Dimensions.get('window').width;
 var screenHeight = Dimensions.get('window').height;
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}) // assumes immutable objects
+
+var mydate = new Date();
+var year = mydate.getFullYear();
+var month = mydate.getMonth();
+var day = mydate.getDate();
 
 var ReadSearch = React.createClass({
 
@@ -41,6 +46,9 @@ var ReadSearch = React.createClass({
       page:1,
       menuSelectedId:this.props.menuSelectedId,
       modalVisible:false,
+      modalType:'1', //弹出框类型 1-查询框 2-点击列表想的日期选择框
+      date: new Date(),
+      bookName:'',//当前选中的书名
     });
   },
 
@@ -122,7 +130,12 @@ var ReadSearch = React.createClass({
    * @param {object} rowData Row data
    */
   _onPress(rowData) {
-    alert(rowData.id+' pressed');
+    this.setState({
+      bookName:rowData.title,
+      modalType:'2',
+      modalVisible:true,
+      
+    });
   },
 
   /**
@@ -290,25 +303,65 @@ var ReadSearch = React.createClass({
     );
   },
 
+
+  onDateChange: function(date) {
+    this.setState({date: date});
+  },
+
+  addToReadPlan:function(){
+    var md = this.state.date.getFullYear()+"-"+(this.state.date.getMonth()+1);
+    alert(md);
+  },
+
+
   render: function() {
 
   //弹出框内容
     var modalView;
     if(this.state.modalVisible){
-      modalView = 
-        <View style={styles.modal}>
-          <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-            <TextInput style={styles.inputs} placeholder={'请输入书名'} textAlign={'center'} onChangeText={(text) => this.setState({text:text})} value={this.state.text}> 
-            </TextInput>
-            <TouchableOpacity style={styles.button} onPress={()=>{this.setState({searchText:this.state.text,modalVisible:false});}}>
-              <Image source={require('../img/search.png')} style={{width:26,height:30,tintColor:'rgba(255,255,255,0.6)'}} resizeMode={'contain'}/>
+      //搜索界面弹出框
+      if(this.state.modalType === '1')
+        modalView = 
+          <View style={styles.modal}>
+            <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+              <TextInput style={styles.inputs} placeholder={'请输入书名'} textAlign={'center'} onChangeText={(text) => this.setState({text:text})} value={this.state.text}> 
+              </TextInput>
+
+              <TouchableOpacity style={styles.button} onPress={()=>{this.setState({searchText:this.state.text,modalVisible:false});}}>
+                <Image source={require('../img/search.png')} style={{width:26,height:30,tintColor:'rgba(255,255,255,0.6)'}} resizeMode={'contain'}/>
+              </TouchableOpacity>
+
+            </View>
+              <TouchableOpacity style={{backgroundColor:'#FFFFFF',width:60,height:60,borderRadius:30,alignItems:'center',
+                justifyContent:'center',bottom:10,left:screenWidth/2-30,position:'absolute'}} onPress={()=>{this.setState({modalVisible:false});}}>
+                <Text>关闭</Text>
+              </TouchableOpacity>
+          </View>
+          //加入阅读计划弹出框
+        else if(this.state.modalType === '2')
+          modalView = 
+          <View style={[styles.modal,{padding:100,backgroundColor:'#FFFFFF',justifyContent:'center'}]}>
+            <View style={{flexDirection:'row'}}>
+              <Text style={{flex:1}}>《{this.state.bookName}》</Text>
+            </View>
+            <DatePickerIOS
+              date={this.state.date}
+              mode="date"
+              timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60}
+              onDateChange={this.onDateChange}
+              minimumDate={new Date(year, month, 1)}
+              maximumDate={new Date(year,11,1)}
+            >
+            </DatePickerIOS>
+            <TouchableOpacity style={{backgroundColor:'rgba(45,188,20,0.8)',width:140,height:40,borderRadius:20,alignItems:'center',
+                justifyContent:'center'}} onPress={()=>{this.addToReadPlan()}}>
+                <Text style={{color:'#FFFFFF'}}>加入该月读书计划</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{backgroundColor:'#DDDDDD',width:60,height:60,borderRadius:30,alignItems:'center',
+                justifyContent:'center',bottom:10,left:screenWidth/2-30,position:'absolute'}} onPress={()=>{this.setState({modalVisible:false});}}>
+                <Text>关闭</Text>
             </TouchableOpacity>
           </View>
-            <TouchableOpacity style={{backgroundColor:'#FFFFFF',width:60,height:60,borderRadius:30,alignItems:'center',
-              justifyContent:'center',bottom:10,left:screenWidth/2-30,position:'absolute'}} onPress={()=>{this.setState({modalVisible:false});}}>
-              <Text>关闭</Text>
-            </TouchableOpacity>
-        </View>
       }
     //弹出框
     var modal;
@@ -371,7 +424,7 @@ var ReadSearch = React.createClass({
               </TouchableOpacity>
             </View>
 
-          <TouchableOpacity onPress={()=>{this.setState({modalVisible:true});}}>
+          <TouchableOpacity onPress={()=>{this.setState({modalVisible:true,modalType:'1'});}}>
             <View style={[styles.inputs,{marginBottom:6,width:160,height:32,borderRadius:16,flexDirection:'row',justifyContent:'center',alignItems:'center',borderWidth:2,borderColor:'rgba(255,255,255,0.8)'}]} textAlign={'center'} onChangeText={(text) => this.setState({text:text})} value={this.state.text}> 
               <Text>{this.state.searchText}</Text>
               <Image source={require('../img/search.png')} style={{width:18,height:22,tintColor:'rgba(219,188,86,1)',right:10,top:3,position:'absolute'}} resizeMode={'contain'}/>
@@ -405,12 +458,7 @@ var styles = StyleSheet.create({
     flex:1,
     backgroundColor:'#FFFFFF',
   },
-  
-  modalContainer:{
-    flex:1,
-    flexDirection:'row',
-    justifyContent:'flex-end',
-  },
+
   header: {
     height: 60,
     backgroundColor: 'rgba(219,188,86,0.8)',

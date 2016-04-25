@@ -9,6 +9,8 @@ var Constants = require('./Constants');
 var Utils = require('./Utils');
 var ReadFoot = require('./ReadFoot');
 
+import BarcodeScanner from 'react-native-barcode-scanner-universal';
+
 var {
   Image,
   StyleSheet,
@@ -21,6 +23,7 @@ var {
   StatusBar,
   Modal,
   ScrollView,
+  Platform,
 } = React;
 
 var sessid;
@@ -35,6 +38,8 @@ var ReadMain = React.createClass({
       modalVisible:false,
       //已选择的菜单id,判断是否存在，如果不存在 说明是第一次进来，设置为1
       menuSelectedId:1,
+      //点击的书的右边的操作菜单id（笔记、书签、书评）
+      menuId:0,
       bookIndex:0,
       controlIndex:0,
       bookPlan:[], //查询到的在当前用户阅读计划中的书籍列表，默认是空的 book列表
@@ -92,7 +97,7 @@ var ReadMain = React.createClass({
         id: menuId,          
         //跳转到main页面（routeid为1） 然后传递最新点击的菜单id过去选中，同时菜单id也决定页面中显示内容的不同 render方法中做判断
         passProps:{
-          menuSelectedId:menuId
+          menuId:menuId
         },
       });
   },
@@ -157,6 +162,10 @@ var ReadMain = React.createClass({
     });
   },
 
+  openScan:function(){
+    this.setState({modalVisible:true,menuId:'-1'})
+  },
+
   render: function() {
     //阅读计划列表
     var planBooks = [];
@@ -173,11 +182,11 @@ var ReadMain = React.createClass({
                 <Text style={styles.text}>启读</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={[styles.imageButton,{backgroundColor:'rgba(119,188,86,0.8)',}]} onPress={()=>{this.setState({menuSelectedId:'2',modalVisible:true});}}>
+              <TouchableOpacity style={[styles.imageButton,{backgroundColor:'rgba(119,188,86,0.8)',}]} onPress={()=>{this.setState({menuId:'2',modalVisible:true});}}>
                 <Text style={styles.text}>书签</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={[styles.imageButton,{backgroundColor:'rgba(219,86,86,0.8)',}]} onPress={()=>{this.setState({menuSelectedId:'3',modalVisible:true});}}>
+              <TouchableOpacity style={[styles.imageButton,{backgroundColor:'rgba(219,86,86,0.8)',}]} onPress={()=>{this.setState({menuId:'3',modalVisible:true});}}>
                 <Text style={styles.text}>书评</Text>
               </TouchableOpacity>
 
@@ -185,7 +194,7 @@ var ReadMain = React.createClass({
                 <Text style={styles.text}>毕读</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={[styles.imageButton,{backgroundColor:'rgba(111,88,67,0.8)',}]} onPress={()=>{this.setState({menuSelectedId:'5',modalVisible:true});}}>
+              <TouchableOpacity style={[styles.imageButton,{backgroundColor:'rgba(111,88,67,0.8)',}]} onPress={()=>{this.setState({menuId:'5',modalVisible:true});}}>
                 <Text style={styles.text}>推荐</Text>
               </TouchableOpacity>
             </View>
@@ -226,9 +235,11 @@ var ReadMain = React.createClass({
     //弹出框内容
     var modalView;
 
-    if(this.state.menuSelectedId === '0')
+    if(this.state.menuId === '0'){
       modalView = (<View></View>);
-    else if(this.state.menuSelectedId === '2'){
+    }
+      
+    else if(this.state.menuId === '2'){
       modalView = 
         <View style={styles.slide2}>
             <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(119,188,86,0.8)',borderRadius:25}}>
@@ -237,12 +248,12 @@ var ReadMain = React.createClass({
               <Text style={styles.text}>书签</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{backgroundColor:'#FFFFFF',width:60,height:60,borderRadius:30,alignItems:'center',
-              justifyContent:'center',bottom:10,left:screenWidth/2-30,position:'absolute'}} onPress={()=>{this.setState({modalVisible:false,menuSelectedId:0});}}>
+              justifyContent:'center',bottom:10,left:screenWidth/2-30,position:'absolute'}} onPress={()=>{this.setState({modalVisible:false,menuId:0});}}>
               <Text>关闭</Text>
             </TouchableOpacity>
         </View>
       }
-      else if(this.state.menuSelectedId === '3'){
+      else if(this.state.menuId === '3'){
       modalView = 
         <View style={styles.slide3}>
             <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(197,86,86,0.8)',borderRadius:25}}>
@@ -251,12 +262,12 @@ var ReadMain = React.createClass({
               <Text style={styles.text}>书评</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{backgroundColor:'#FFFFFF',width:60,height:60,borderRadius:30,alignItems:'center',
-              justifyContent:'center',bottom:10,left:screenWidth/2-30,position:'absolute'}} onPress={()=>{this.setState({modalVisible:false,menuSelectedId:0});}}>
+              justifyContent:'center',bottom:10,left:screenWidth/2-30,position:'absolute'}} onPress={()=>{this.setState({modalVisible:false,menuId:0});}}>
               <Text>关闭</Text>
             </TouchableOpacity>
         </View>
       }
-      else if(this.state.menuSelectedId === '5'){
+      else if(this.state.menuId === '5'){
       modalView = 
         <View style={styles.slide5}>
             <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(111,88,67,0.8)',borderRadius:25}}>
@@ -265,11 +276,38 @@ var ReadMain = React.createClass({
               <Text style={styles.text}>推荐</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{backgroundColor:'#FFFFFF',width:60,height:60,borderRadius:30,alignItems:'center',
-              justifyContent:'center',bottom:10,left:screenWidth/2-30,position:'absolute'}} onPress={()=>{this.setState({modalVisible:false,menuSelectedId:0});}}>
+              justifyContent:'center',bottom:10,left:screenWidth/2-30,position:'absolute'}} onPress={()=>{this.setState({modalVisible:false,menuId:0});}}>
               <Text>关闭</Text>
             </TouchableOpacity>
         </View>
       }
+
+      //弹出的条码扫描框
+      else if(this.state.menuId === '-1'){
+        
+        let scanArea = null;
+        if (Platform.OS === 'ios') {
+          scanArea = (
+            <View style={styles.rectangleContainer}>
+              <View style={styles.rectangle} />
+            </View>
+          );
+        }
+
+        modalView = 
+        <View style={styles.camera}>
+          <BarcodeScanner
+              onBarCodeRead={(code) => {alert(code)}}
+              style={{flex:1,backgroundColor:'rgba(255,255,255,0.8)'}}>
+              {scanArea}
+          </BarcodeScanner>
+          <TouchableOpacity style={{backgroundColor:'#FFFFFF',width:60,height:60,borderRadius:30,alignItems:'center',
+              justifyContent:'center',bottom:10,left:screenWidth/2-30,position:'absolute'}} onPress={()=>{this.setState({modalVisible:false,menuId:0});}}>
+              <Text>关闭</Text>
+            </TouchableOpacity>
+        </View>;
+      }
+
   
     //弹出框
     var modal;
@@ -283,12 +321,15 @@ var ReadMain = React.createClass({
           {modalView}
       </Modal>;
 
+    
+
+        
+
    return (
     <View style={{flex:1}}>
-
       <View style={ styles.header }>
         <View style={styles.headerLeftMenu}>
-            <TouchableOpacity><Image style={styles.headerImg}
+            <TouchableOpacity onPress={()=>{this.openScan()}}><Image style={styles.headerImg}
               source={require('../img/head_icon_scan.png')} resizeMode={'contain'}/>
             </TouchableOpacity>
           </View>
@@ -419,6 +460,26 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(255,105,180,1)',
+  },
+
+  camera: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.8)',
+  },
+  rectangleContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255,255,255,0.4)'
+  },
+  rectangle: {
+    height: 250,
+    width: 250,
+    borderWidth: 1,
+    borderColor: 'rgba(153,204,255,0.8)',
+    backgroundColor: 'rgba(255,255,255,0.4)'
   }
 });
 

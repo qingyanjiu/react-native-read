@@ -21,8 +21,11 @@ var {
   Text,
   StatusBar,
   Modal,
-  DatePickerIOS,
+  PickerIOS,
+  AlertIOS
 } = React;
+
+var PickerItemIOS = PickerIOS.Item;
 
 var sessid;
 
@@ -34,7 +37,11 @@ var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}) // assu
 var mydate = new Date();
 var year = mydate.getFullYear();
 var month = mydate.getMonth();
-var day = mydate.getDate();
+
+var MONTHS_THIS_YEAR = [];
+for(let i=month+1;i<=12;i++){
+  MONTHS_THIS_YEAR.push(i.toString());
+}
 
 var ReadSearch = React.createClass({
 
@@ -47,8 +54,9 @@ var ReadSearch = React.createClass({
       menuSelectedId:this.props.menuSelectedId,
       modalVisible:false,
       modalType:'1', //弹出框类型 1-查询框 2-点击列表想的日期选择框
-      date: new Date(),
       bookName:'',//当前选中的书名
+      month:(month+1).toString(),//选中的月份
+      selectedBook:{},
     });
   },
 
@@ -134,7 +142,7 @@ var ReadSearch = React.createClass({
       bookName:rowData.title,
       modalType:'2',
       modalVisible:true,
-      
+      selectedBook:rowData,
     });
   },
 
@@ -304,18 +312,46 @@ var ReadSearch = React.createClass({
   },
 
 
-  onDateChange: function(date) {
-    this.setState({date: date});
-  },
-
   addToReadPlan:function(){
-    var md = this.state.date.getFullYear()+"-"+(this.state.date.getMonth()+1);
-    alert(md);
+    fetch(Constants.URL+'/read/book/addReadPlan',
+            {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            method: 'post',
+            body: JSON.stringify({
+                'sessionid':sessid,
+                'type':'ios',
+                'month':this.state.month,
+                'callData':this.state.selectedBook,
+            })
+        })
+        //这里不用转换，根据后台返回的值来定
+        .then((response) => response.json())
+        .then((json) => {
+          if(json.result === 'success'){
+            AlertIOS.alert(
+             '成功',
+             '添加到阅读计划成功!'
+            );
+          }
+          else if(json.result === 'exist'){
+            AlertIOS.alert(
+             '失败',
+             '已经存在于阅读计划中!'
+            );
+          }
+          })
+          .catch((error) => {
+            AlertIOS.alert(
+             '错误',
+             '添加阅读计划失败，请重试'
+            );
+    });
   },
 
 
   render: function() {
-
   //弹出框内容
     var modalView;
     if(this.state.modalVisible){
@@ -324,7 +360,7 @@ var ReadSearch = React.createClass({
         modalView = 
           <View style={styles.modal}>
             <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-              <TextInput style={styles.inputs} placeholder={'请输入书名'} textAlign={'center'} onChangeText={(text) => this.setState({text:text})} value={this.state.text}> 
+              <TextInput style={styles.inputs} placeholder={'请输入书名'} textAlign={'center'} onChangeText={(text) => this.setState({text:text})} value={this.state.text} autoFocus={true}> 
               </TextInput>
 
               <TouchableOpacity style={styles.button} onPress={()=>{this.setState({searchText:this.state.text,modalVisible:false});}}>
@@ -340,19 +376,24 @@ var ReadSearch = React.createClass({
           //加入阅读计划弹出框
         else if(this.state.modalType === '2')
           modalView = 
-          <View style={[styles.modal,{padding:100,backgroundColor:'#FFFFFF',justifyContent:'center'}]}>
+          <View style={[styles.modal,{padding:100,backgroundColor:'rgba(255,255,255,1)',justifyContent:'center'}]}>
             <View style={{flexDirection:'row'}}>
               <Text style={{flex:1}}>《{this.state.bookName}》</Text>
             </View>
-            <DatePickerIOS
-              date={this.state.date}
-              mode="date"
-              timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60}
-              onDateChange={this.onDateChange}
-              minimumDate={new Date(year, month, 1)}
-              maximumDate={new Date(year,11,1)}
-            >
-            </DatePickerIOS>
+            
+            <PickerIOS style={{width:100}}
+              selectedValue={this.state.month}
+              onValueChange={(month) => this.setState({month: month})}>
+              {MONTHS_THIS_YEAR.map((month) => ( 
+                <PickerItemIOS
+                  key={month}
+                  value={month}
+                  label={month+'月'}
+                  />
+
+              ))}
+            </PickerIOS>
+
             <TouchableOpacity style={{backgroundColor:'rgba(45,188,20,0.8)',width:140,height:40,borderRadius:20,alignItems:'center',
                 justifyContent:'center'}} onPress={()=>{this.addToReadPlan()}}>
                 <Text style={{color:'#FFFFFF'}}>加入该月读书计划</Text>

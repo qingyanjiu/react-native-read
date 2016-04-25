@@ -284,26 +284,20 @@ var ReadMain = React.createClass({
 
       //弹出的条码扫描框
       else if(this.state.menuId === '-1'){
-        
-        let scanArea = null;
-        if (Platform.OS === 'ios') {
-          scanArea = (
-            <View style={styles.rectangleContainer}>
-              <View style={styles.rectangle} />
-            </View>
-          );
-        }
 
         modalView = 
         <View style={styles.camera}>
+          <View>
+              <Text style={{marginTop:-60,fontSize:20}}>请扫描书背后的条码</Text>
+          </View>
           <BarcodeScanner
-              onBarCodeRead={(code) => {alert(code)}}
-              style={{flex:1,backgroundColor:'rgba(255,255,255,0.8)'}}>
-              {scanArea}
+              onBarCodeRead={(code) => {alert("RSBN码:"+code.data);this.setState({modalVisible:false,menuId:0});}}
+              style={{width:300,height:200}}>
+
           </BarcodeScanner>
-          <TouchableOpacity style={{backgroundColor:'#FFFFFF',width:60,height:60,borderRadius:30,alignItems:'center',
+          <TouchableOpacity style={{backgroundColor:'#888888',width:60,height:60,borderRadius:30,alignItems:'center',
               justifyContent:'center',bottom:10,left:screenWidth/2-30,position:'absolute'}} onPress={()=>{this.setState({modalVisible:false,menuId:0});}}>
-              <Text>关闭</Text>
+              <Text style={{color:'#FFFFFF'}}>关闭</Text>
             </TouchableOpacity>
         </View>;
       }
@@ -463,24 +457,11 @@ var styles = StyleSheet.create({
   },
 
   camera: {
-    flex: 1,
+    flex:1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.8)',
+    backgroundColor: 'rgba(255,255,255,0.9)',
   },
-  rectangleContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(255,255,255,0.4)'
-  },
-  rectangle: {
-    height: 250,
-    width: 250,
-    borderWidth: 1,
-    borderColor: 'rgba(153,204,255,0.8)',
-    backgroundColor: 'rgba(255,255,255,0.4)'
-  }
 });
 
 module.exports = ReadMain;

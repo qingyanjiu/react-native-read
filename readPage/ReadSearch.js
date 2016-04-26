@@ -128,7 +128,10 @@ var ReadSearch = React.createClass({
           }
           })
           .catch((error) => {
-            alert("获取书籍失败，请重试");
+            AlertIOS.alert(
+             '错误',
+             '获取书籍信息失败，请重试'
+            );
           });  
     },
 
@@ -376,7 +379,7 @@ var ReadSearch = React.createClass({
           //加入阅读计划弹出框
         else if(this.state.modalType === '2')
           modalView = 
-          <View style={[styles.modal,{padding:100,backgroundColor:'rgba(255,255,255,1)',justifyContent:'center'}]}>
+          <View style={[styles.modal,{marginTop:20,backgroundColor:'rgba(255,255,255,1)',justifyContent:'center'}]}>
             <View style={{flexDirection:'row'}}>
               <Text style={{flex:1}}>《{this.state.bookName}》</Text>
             </View>
@@ -459,11 +462,15 @@ var ReadSearch = React.createClass({
        <View style={{flex:1}}>
 
         <View style={ styles.header }>
+          
           <View style={styles.headerLeftMenu}>
+              {/*
               <TouchableOpacity><Image style={styles.headerImg}
                 source={require('../img/head_icon_scan.png')} resizeMode={'contain'}/>
               </TouchableOpacity>
-            </View>
+              */}
+          </View>
+
 
           <TouchableOpacity onPress={()=>{this.setState({modalVisible:true,modalType:'1'});}}>
             <View style={[styles.inputs,{marginBottom:6,width:160,height:32,borderRadius:16,flexDirection:'row',justifyContent:'center',alignItems:'center',borderWidth:2,borderColor:'rgba(255,255,255,0.8)'}]} textAlign={'center'} onChangeText={(text) => this.setState({text:text})} value={this.state.text}> 

@@ -24,12 +24,25 @@ var {
   Modal,
   ScrollView,
   Platform,
+  PickerIOS,
+  AlertIOS,
 } = React;
+
+var PickerItemIOS = PickerIOS.Item;
 
 var sessid;
 
 var screenWidth = Dimensions.get('window').width;
 var screenHeight = Dimensions.get('window').height;
+
+var mydate = new Date();
+var year = mydate.getFullYear();
+var month = mydate.getMonth();
+
+var MONTHS_THIS_YEAR = [];
+for(let i=month+1;i<=12;i++){
+  MONTHS_THIS_YEAR.push(i.toString());
+}
 
 var ReadMain = React.createClass({
 
@@ -38,13 +51,15 @@ var ReadMain = React.createClass({
       modalVisible:false,
       //已选择的菜单id,判断是否存在，如果不存在 说明是第一次进来，设置为1
       menuSelectedId:1,
-      //点击的书的右边的操作菜单id（笔记、书签、书评）
-      menuId:0,
+      //点击的书的右边的操作菜单id（书签、书评）
+      menuId:'0',//0-不显示 2-书签 3-书评 5-分享 -1-扫码框 -2-扫码后的书籍展示框
       bookIndex:0,
       controlIndex:0,
       bookPlan:[], //查询到的在当前用户阅读计划中的书籍列表，默认是空的 book列表
       // currentBook:{},//当前已选择书籍的信息 book对象
       readInfo:{},//点击选项卡后查询当前书籍的阅读信息 readHistory对象
+      scanedBook:{},//扫码后获得的书籍信息
+      month:(month+1).toString(),//选中的月份
     });
   },
 
@@ -76,7 +91,10 @@ var ReadMain = React.createClass({
       .then((response) => response.json())
       .then((json) => {this._getReadPlanHandler(json)})
       .catch((error) => {
-        alert("获取书籍信息失败，请稍后再试");
+        AlertIOS.alert(
+             '错误',
+             '获取阅读计划失败，请重试'
+        );
       });
   },
 
@@ -97,7 +115,7 @@ var ReadMain = React.createClass({
         id: menuId,          
         //跳转到main页面（routeid为1） 然后传递最新点击的菜单id过去选中，同时菜单id也决定页面中显示内容的不同 render方法中做判断
         passProps:{
-          menuId:menuId
+          menuSelectedId:menuId
         },
       });
   },
@@ -143,7 +161,10 @@ var ReadMain = React.createClass({
         });
       })
       .catch((error) => {
-        alert("获取阅读信息失败，请稍后再试");
+        AlertIOS.alert(
+             '错误',
+             '获取书籍信息失败，请重试'
+        );
       });
     },
 
@@ -162,9 +183,90 @@ var ReadMain = React.createClass({
     });
   },
 
+  //点击扫描条码的按钮
   openScan:function(){
     this.setState({modalVisible:true,menuId:'-1'})
   },
+
+  //扫码成功后操作
+  readBarCode:function(code){
+    //如果是条码
+    if(code.type.indexOf('EAN-13')>0){
+      //通过扫描到的isbn码获取图书信息
+      fetch('https://api.douban.com/v2/book/isbn/'+code.data+"?fields=id,title,images,summary,author,rating",
+            {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            method: 'get',
+        })
+        //这里不用转换，根据后台返回的值来定
+        .then((response) => response.json())
+        .then((json) => {
+          this.setState({
+            scanedBook:json,
+            menuId:'-2',
+          });
+        })
+        .catch((error) => {
+          AlertIOS.alert(
+             '错误',
+             '获取书籍信息失败，请重试'
+            );
+          //最后关闭扫码框
+          this.setState({modalVisible:false,menuId:0});
+        });
+    }
+    else{
+      AlertIOS.alert(
+        '注意',
+        '无法识别，请扫描书背面右下角的条码'
+      );
+      //最后关闭扫码框
+      this.setState({modalVisible:false,menuId:0});
+    }
+    
+  },
+
+  //添加扫码的书到阅读计划中
+  // addToReadPlan:function(){
+  //   fetch(Constants.URL+'/read/book/addReadPlan',
+  //           {
+  //           headers: {
+  //             'Content-Type': 'application/json',
+  //           },
+  //           method: 'post',
+  //           body: JSON.stringify({
+  //               'sessionid':sessid,
+  //               'type':'ios',
+  //               'month':this.state.month,
+  //               'callData':this.state.scanedBook,
+  //           })
+  //       })
+  //       //这里不用转换，根据后台返回的值来定
+  //       .then((response) => response.json())
+  //       .then((json) => {
+  //         if(json.result === 'success'){
+  //           AlertIOS.alert(
+  //            '成功',
+  //            '添加到阅读计划成功!'
+  //           );
+  //         }
+  //         else if(json.result === 'exist'){
+  //           AlertIOS.alert(
+  //            '失败',
+  //            '已经存在于阅读计划中!'
+  //           );
+  //         }
+  //         })
+  //         .catch((error) => {
+  //           AlertIOS.alert(
+  //            '错误',
+  //            '添加阅读计划失败，请重试'
+  //           );
+  //   });
+  // },
+  
 
   render: function() {
     //阅读计划列表
@@ -224,7 +326,7 @@ var ReadMain = React.createClass({
       }
       else {
         content = (
-            <View style={styles.slide5}>
+            <View style={styles.slide1}>
               <Text style={styles.text}>
                 暂无阅读计划
               </Text>
@@ -291,10 +393,51 @@ var ReadMain = React.createClass({
               <Text style={{marginTop:-60,fontSize:20}}>请扫描书背后的条码</Text>
           </View>
           <BarcodeScanner
-              onBarCodeRead={(code) => {alert("RSBN码:"+code.data);this.setState({modalVisible:false,menuId:0});}}
+              onBarCodeRead={(code) => {this.readBarCode(code)}}
               style={{width:300,height:200}}>
 
           </BarcodeScanner>
+          <TouchableOpacity style={{backgroundColor:'#888888',width:60,height:60,borderRadius:30,alignItems:'center',
+              justifyContent:'center',bottom:10,left:screenWidth/2-30,position:'absolute'}} onPress={()=>{this.setState({modalVisible:false,menuId:0});}}>
+              <Text style={{color:'#FFFFFF'}}>关闭</Text>
+            </TouchableOpacity>
+        </View>;
+      }
+
+      //扫描成功后的书籍展示框
+      else if(this.state.menuId === '-2'){
+
+        modalView = 
+        <View style={styles.slide0}>
+          <View style={{height: 100,flexDirection:'row',justifyContent:'flex-start',alignItems:'center',marginTop:20}}>
+            <Image style={{height:100,width:76,marginLeft:10}} source={{uri: this.state.scanedBook.images.large}}> 
+            </Image>
+            <View style={{flexDirection:'column',alignItems:'flex-start',justifyContent:'center',marginLeft:20}}>
+              <Text style={{width:screenWidth-120,fontSize:20,paddingBottom:6,flexWrap:'wrap'}}>{this.state.scanedBook.title}</Text> 
+              <Text style={{width:screenWidth-120,fontSize:12,paddingBottom:6,flexWrap:'wrap'}}>{this.state.scanedBook.author}</Text>
+              <Text style={{fontSize:10,}}>豆瓣评分:{this.state.scanedBook.rating.average}</Text>
+            </View>
+          </View>
+
+          <PickerIOS style={{width:100,}}
+              selectedValue={this.state.month}
+              onValueChange={(month) => this.setState({month: month})}>
+              {MONTHS_THIS_YEAR.map((month) => ( 
+                <PickerItemIOS
+                  key={month}
+                  value={month}
+                  label={month+'月'}
+                  />
+
+              ))}
+            </PickerIOS>
+
+            <TouchableOpacity style={{backgroundColor:'rgba(45,188,20,0.8)',width:140,height:40,borderRadius:20,alignItems:'center',
+                justifyContent:'center'}} onPress={()=>{this.addToReadPlan()}}>
+                <Text style={{color:'#FFFFFF'}}>加入该月读书计划</Text>
+            </TouchableOpacity>
+
+
           <TouchableOpacity style={{backgroundColor:'#888888',width:60,height:60,borderRadius:30,alignItems:'center',
               justifyContent:'center',bottom:10,left:screenWidth/2-30,position:'absolute'}} onPress={()=>{this.setState({modalVisible:false,menuId:0});}}>
               <Text style={{color:'#FFFFFF'}}>关闭</Text>
@@ -414,7 +557,7 @@ var styles = StyleSheet.create({
     marginTop:12,
   },
   imageButton:{
-    flex:1,
+    flex:1, 
     // width:screenWidth - (screenHeight-160)/screenHeight * screenWidth - 6 - 6,
     width:screenWidth - (screenHeight-220)*2/3 - 6 - 6,
     marginBottom:12,
@@ -425,11 +568,19 @@ var styles = StyleSheet.create({
   secondSwiper:{
   },
 
+  slide0: {
+    flex: 1,
+    marginTop:20,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,1)',
+  },
+
   slide1: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(153,204,0,1)',
+    backgroundColor: 'rgba(219,188,86,0.5)',
   },
   slide2: {
     flex: 1,
@@ -439,6 +590,7 @@ var styles = StyleSheet.create({
   },
   slide3: {
     flex: 1,
+    marginTop:20,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(250,128,114,1)',
@@ -451,6 +603,7 @@ var styles = StyleSheet.create({
   },
   slide5: {
     flex: 1,
+    marginTop:20,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(255,105,180,1)',
@@ -458,6 +611,7 @@ var styles = StyleSheet.create({
 
   camera: {
     flex:1,
+    marginTop:20,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(255,255,255,0.9)',

@@ -21,15 +21,15 @@ var {
   TouchableHighlight,
   TouchableOpacity,
   Text,
-  StatusBar,
   Modal,
   ScrollView,
   Platform,
-  PickerIOS,
-  AlertIOS,
+  Picker,
+  Alert,
+  StatusBar,
 } = React;
 
-var PickerItemIOS = PickerIOS.Item;
+var PickerItem = Picker.Item;
 
 var sessid;
 
@@ -74,7 +74,6 @@ var ReadMain = React.createClass({
   },
 
   componentDidMount:function(){
-    StatusBar.setBarStyle(1);
     
     //获取阅读计划信息
     fetch(Constants.URL+'/read/book/queryReadPlan',
@@ -92,7 +91,7 @@ var ReadMain = React.createClass({
       .then((response) => response.json())
       .then((json) => {this._getReadPlanHandler(json)})
       .catch((error) => {
-        AlertIOS.alert(
+        Alert.alert(
              '错误',
              '获取阅读计划失败，请重试'
         );
@@ -162,7 +161,7 @@ var ReadMain = React.createClass({
         });
       })
       .catch((error) => {
-        AlertIOS.alert(
+        Alert.alert(
              '错误',
              '获取书籍信息失败，请重试'
         );
@@ -210,7 +209,7 @@ var ReadMain = React.createClass({
           });
         })
         .catch((error) => {
-          AlertIOS.alert(
+          Alert.alert(
              '错误',
              '获取书籍信息失败，请重试'
             );
@@ -219,7 +218,7 @@ var ReadMain = React.createClass({
         });
     }
     else{
-      AlertIOS.alert(
+      Alert.alert(
         '注意',
         '无法识别，请扫描书背面右下角的条码'
       );
@@ -248,20 +247,20 @@ var ReadMain = React.createClass({
   //       .then((response) => response.json())
   //       .then((json) => {
   //         if(json.result === 'success'){
-  //           AlertIOS.alert(
+  //           Alert.alert(
   //            '成功',
   //            '添加到阅读计划成功!'
   //           );
   //         }
   //         else if(json.result === 'exist'){
-  //           AlertIOS.alert(
+  //           Alert.alert(
   //            '失败',
   //            '已经存在于阅读计划中!'
   //           );
   //         }
   //         })
   //         .catch((error) => {
-  //           AlertIOS.alert(
+  //           Alert.alert(
   //            '错误',
   //            '添加阅读计划失败，请重试'
   //           );
@@ -406,7 +405,7 @@ var ReadMain = React.createClass({
           </View>
           <BarcodeScanner
               onBarCodeRead={(code) => {this.readBarCode(code)}}
-              style={{width:300,height:200}}>
+              style={{width:200,height:300}}>
 
           </BarcodeScanner>
           <TouchableOpacity style={{backgroundColor:'#888888',width:60,height:60,borderRadius:30,alignItems:'center',
@@ -421,8 +420,8 @@ var ReadMain = React.createClass({
 
         modalView = 
         <View style={styles.slide0}>
-          <View style={{height: 100,flexDirection:'row',justifyContent:'flex-start',alignItems:'center',marginTop:20}}>
-            <Image style={{height:100,width:76,marginLeft:10}} source={{uri: this.state.scanedBook.images.large}}> 
+          <View style={{height: 100,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+            <Image style={{height:100,width:76,marginLeft:screenWidth/2-70}} source={{uri: this.state.scanedBook.images.large}}> 
             </Image>
             <View style={{flexDirection:'column',alignItems:'flex-start',justifyContent:'center',marginLeft:20}}>
               <Text style={{width:screenWidth-120,fontSize:20,paddingBottom:6,flexWrap:'wrap'}}>{this.state.scanedBook.title}</Text> 
@@ -431,18 +430,18 @@ var ReadMain = React.createClass({
             </View>
           </View>
 
-          <PickerIOS style={{width:100,}}
+          <Picker style={{width:80,height:100}} 
               selectedValue={this.state.month}
               onValueChange={(month) => this.setState({month: month})}>
               {MONTHS_THIS_YEAR.map((month) => ( 
-                <PickerItemIOS
+                <PickerItem
                   key={month}
                   value={month}
                   label={month+'月'}
                   />
 
               ))}
-            </PickerIOS>
+            </Picker>
 
             <TouchableOpacity style={{backgroundColor:'rgba(45,188,20,0.8)',width:140,height:40,borderRadius:20,alignItems:'center',
                 justifyContent:'center'}} onPress={()=>{this.addToReadPlan()}}>
@@ -465,7 +464,7 @@ var ReadMain = React.createClass({
           animated={true}
           transparent={true}
           visible={this.state.modalVisible}
-          onRequestClose={() => {this._setModalVisible(false)}}
+          onRequestClose={() => {this.setState({modalVisible:false,menuId:0})}}
           > 
           {modalView}
       </Modal>;
@@ -476,6 +475,12 @@ var ReadMain = React.createClass({
 
    return (
     <View style={{flex:1}}>
+
+      <StatusBar
+       backgroundColor="rgba(219,188,86,0.8)"
+       barStyle="light-content"
+      ></StatusBar>
+
       <View style={ styles.header }>
         <View style={styles.headerLeftMenu}>
             <TouchableOpacity onPress={()=>{this.openScan()}}><Image style={styles.headerImg}
@@ -520,7 +525,7 @@ var styles = StyleSheet.create({
     justifyContent:'flex-end',
   },
   header: {
-    height: 60,
+    height: 40,
     backgroundColor: 'rgba(219,188,86,0.8)',
     borderBottomWidth:0,
     flexDirection:'row',
@@ -539,7 +544,7 @@ var styles = StyleSheet.create({
   },
   headerImg:{
     height:34,
-    marginBottom:4,
+    marginBottom:6,
   },
 
   
@@ -582,8 +587,7 @@ var styles = StyleSheet.create({
 
   slide0: {
     flex: 1,
-    marginTop:20,
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(255,255,255,1)',
   },
@@ -602,7 +606,6 @@ var styles = StyleSheet.create({
   },
   slide3: {
     flex: 1,
-    marginTop:20,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(250,128,114,1)',
@@ -615,7 +618,6 @@ var styles = StyleSheet.create({
   },
   slide5: {
     flex: 1,
-    marginTop:20,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(255,105,180,1)',
@@ -623,7 +625,6 @@ var styles = StyleSheet.create({
 
   camera: {
     flex:1,
-    marginTop:20,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(255,255,255,0.9)',

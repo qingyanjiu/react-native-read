@@ -1,6 +1,7 @@
 package com.reading;
 
 import com.facebook.react.ReactActivity;
+import cl.json.RNSharePackage;
 import com.eguma.barcodescanner.BarcodeScanner;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
 import io.realm.react.RealmReactPackage;
@@ -38,6 +39,7 @@ public class MainActivity extends ReactActivity {
     protected List<ReactPackage> getPackages() {
         return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new RNSharePackage(),
             new BarcodeScanner(),
             new RCTCameraPackage(),
             new RealmReactPackage()

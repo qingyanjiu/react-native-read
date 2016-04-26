@@ -10,6 +10,7 @@ var Utils = require('./Utils');
 var ReadFoot = require('./ReadFoot');
 
 import BarcodeScanner from 'react-native-barcode-scanner-universal';
+import Share from 'react-native-share';
 
 var {
   Image,
@@ -266,6 +267,17 @@ var ReadMain = React.createClass({
   //           );
   //   });
   // },
+
+  //分享
+  onShare:function() {
+    Share.open({
+      share_text: "我在用这个读书管理软件！",
+      share_URL: "http://alaien-book.daoapp.io/", 
+      title: "分享",
+    },(e) => {
+      console.log(e);
+    });
+  },
   
 
   render: function() {
@@ -473,7 +485,7 @@ var ReadMain = React.createClass({
         <Image style={{height:20,marginBottom:12}} source={require('../img/logo.png')} resizeMode={'contain'}/>
 
         <View style={styles.headerRightMenu}>
-            <TouchableOpacity><Image style={styles.headerImg}
+            <TouchableOpacity onPress={()=>{this.onShare()}}><Image style={styles.headerImg}
               source={require('../img/head_icon_share.png')} resizeMode={'contain'}/>
             </TouchableOpacity>
           </View>

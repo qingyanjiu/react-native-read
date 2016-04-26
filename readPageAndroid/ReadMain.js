@@ -100,12 +100,26 @@ var ReadMain = React.createClass({
 
   //获取阅读计划返回的操作
   _getReadPlanHandler:function(json){   //成功 
+    //session过期
+      if(json.result === 'expired'){
+        Alert.alert(
+             '注意',
+             '登录已过期，请重新登录'
+        );
+        //返回登录界面
+        this.props.navigator.replace({
+          name: '',
+          id: 0         
+        });
+      }
+    else{
      this.setState({
         //读书计划列表状态初始化
         bookPlan : json,
         // //默认选择的当前选择书籍为第一本
         // currentBook:json[0],
       });
+    }
   },
 
   //点击菜单选择相应页面
@@ -156,9 +170,23 @@ var ReadMain = React.createClass({
       //这里不用转换，根据后台返回的值来定
       .then((response) => response.json())
       .then((json) => {
-        this.setState({
-          readInfo:json
-        });
+        //session过期
+        if(json.result === 'expired'){
+          Alert.alert(
+               '注意',
+               '登录已过期，请重新登录'
+          );
+          //返回登录界面
+          this.props.navigator.replace({
+            name: '',
+            id: 0         
+          });
+        }
+        else{
+          this.setState({
+            readInfo:json
+          });
+        }
       })
       .catch((error) => {
         Alert.alert(

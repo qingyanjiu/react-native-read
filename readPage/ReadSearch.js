@@ -118,15 +118,28 @@ var ReadSearch = React.createClass({
         //这里不用转换，根据后台返回的值来定
         .then((response) => response.json())
         .then((json) => {
-          var rows = json.books;
-          if (page === Math.ceil(json.total/10)) {
-            callback(rows, {
-              allLoaded: true, // the end of the list is reached
-            });        
-          } else {
-            callback(rows);
+          if(json.result === 'expired'){
+            AlertIOS.alert(
+                 '注意',
+                 '登录已过期，请重新登录'
+            );
+            //返回登录界面
+            this.props.navigator.replace({
+              name: '',
+              id: 0         
+            });
           }
-          })
+          else{
+            var rows = json.books;
+            if (page === Math.ceil(json.total/10)) {
+              callback(rows, {
+                allLoaded: true, // the end of the list is reached
+              });        
+            } else {
+              callback(rows);
+            }
+          }
+        })
           .catch((error) => {
             AlertIOS.alert(
              '错误',
@@ -343,6 +356,17 @@ var ReadSearch = React.createClass({
              '失败',
              '已经存在于阅读计划中!'
             );
+          }
+          else if(json.result === 'expired'){
+            AlertIOS.alert(
+                 '注意',
+                 '登录已过期，请重新登录'
+            );
+            //返回登录界面
+            this.props.navigator.replace({
+              name: '',
+              id: 0         
+            });
           }
           })
           .catch((error) => {

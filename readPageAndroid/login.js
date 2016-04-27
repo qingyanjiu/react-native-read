@@ -47,7 +47,7 @@ var login = React.createClass({
           body: JSON.stringify({ 
               'username': this.state.username,
               'password': this.state.password,
-              'type':'ios'
+              'type':'android'
           })
       })
       .then((response) => response.json())

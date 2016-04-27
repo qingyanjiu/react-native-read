@@ -109,7 +109,7 @@ var ReadSearch = React.createClass({
             method: 'post',
             body: JSON.stringify({
                 'sessionid':sessid,
-                'type':'ios',
+                'type':'android',
                 'text':this.state.searchText,
                 'page': page
             })
@@ -337,7 +337,7 @@ var ReadSearch = React.createClass({
             method: 'post',
             body: JSON.stringify({
                 'sessionid':sessid,
-                'type':'ios',
+                'type':'android',
                 'month':this.state.month,
                 'callData':this.state.selectedBook,
             })

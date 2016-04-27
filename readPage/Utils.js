@@ -11,7 +11,11 @@ module.exports = {
     });
     //获取本地保存的sessionid
     var sess = realm.objects('Session');
-    var sessid = sess[0].id;
+
+    var sessid;
+    if(sess[0]){
+      sessid = sess[0].id
+    }
     callback(sessid);
   },
 };

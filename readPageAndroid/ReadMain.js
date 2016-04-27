@@ -84,7 +84,7 @@ var ReadMain = React.createClass({
           method: 'post',
           body: JSON.stringify({
               'sessionid':sessid,
-              'type':'ios'
+              'type':'PickerItem'
           })
       })
       //这里不用转换，根据后台返回的值来定
@@ -163,7 +163,7 @@ var ReadMain = React.createClass({
           method: 'post',
           body: JSON.stringify({
               'sessionid':sessid,
-              'type':'ios',
+              'type':'android',
               'douban_id':this.state.bookPlan[this.state.bookIndex].douban_id,
           })
       })
@@ -266,7 +266,7 @@ var ReadMain = React.createClass({
   //           method: 'post',
   //           body: JSON.stringify({
   //               'sessionid':sessid,
-  //               'type':'ios',
+  //               'type':'android',
   //               'month':this.state.month,
   //               'callData':this.state.scanedBook,
   //           })

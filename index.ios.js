@@ -11,6 +11,7 @@ var Dimensions = require('Dimensions');
 var Login = require('./readPage/loginIOS');
 var Main = require('./readPage/ReadMain');
 var Search = require('./readPage/ReadSearch');
+var Utils = require('./readPage/Utils');
 
 
 var {
@@ -24,7 +25,18 @@ var {
   View,
 } = React;
 
+var sessid;
+
 var reading = React.createClass({
+
+  componentWillMount:function(){
+    //获取本地保存的sessionid
+    Utils.getSessionId(
+      function(data){
+        sessid = data;
+      }
+    );
+  },
 
   _renderScene:function(router, navigator){
       var Component = null;
@@ -62,9 +74,15 @@ var reading = React.createClass({
     });
   },
   render() {
+    var content;
+    //如果有sessionid，直接跳过登录界面
+    if(typeof(sessid) !== 'undefined')
+      content = 1;
+    else
+      content = 0;
     return (
       <Navigator
-        initialRoute={{name: 'index', index: 0,id:0}}
+        initialRoute={{name: 'index', index: content,id:content}}
         renderScene={this._renderScene} />
     );
   }

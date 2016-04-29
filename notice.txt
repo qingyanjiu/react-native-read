@@ -9,3 +9,12 @@ componentWillReceiveProps(nextProps) {
 
 2）node_modules/react-native-swiper/dist/index 这个修改了swiper的问题，还是慢，懒得记了
 如果迁移项目时，需要npm install 后再将这两个文件替换掉
+
+
+//安装依赖环境
+npm install
+which rnpm || npm install -g rnpm
+rnpm link react-native-camera
+rnpm link react-native-barcodescanner
+rnpm link realm
+rnpm link react-native-share

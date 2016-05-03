@@ -540,7 +540,7 @@ var ReadSearch = React.createClass({
             </TouchableOpacity>
           </View>
 
-          //弹出的条码扫描框
+        //弹出的条码扫描框
         else if(this.state.modalType === '-1'){
 
           modalView = 
@@ -595,7 +595,7 @@ var ReadSearch = React.createClass({
 
 
             <TouchableOpacity style={{backgroundColor:'#888888',width:60,height:60,borderRadius:30,alignItems:'center',
-                justifyContent:'center',bottom:10,left:screenWidth/2-30,position:'absolute'}} onPress={()=>{this.setState({modalVisible:false,menuId:0});}}>
+                justifyContent:'center',bottom:10,left:screenWidth/2-30,position:'absolute'}} onPress={()=>{this.setState({modalVisible:false,modalType:0});}}>
                 <Text style={{color:'#FFFFFF'}}>关闭</Text>
               </TouchableOpacity>
           </View>;

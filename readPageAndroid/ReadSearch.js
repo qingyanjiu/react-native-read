@@ -9,6 +9,8 @@ var Constants = require('./Constants');
 var Utils = require('./Utils');
 var ReadFoot = require('./ReadFoot');
 
+import BarcodeScanner from 'react-native-barcode-scanner-universal';
+import Share from 'react-native-share';
 
 var {
   Image,
@@ -57,6 +59,7 @@ var ReadSearch = React.createClass({
       bookName:'',//当前选中的书名
       month:(month+1).toString(),//选中的月份
       selectedBook:{},
+      scanedBook:{},//扫码后获得的书籍信息
     });
   },
 
@@ -379,6 +382,108 @@ var ReadSearch = React.createClass({
   },
 
 
+  //点击扫描条码的按钮
+  openScan:function(){
+    this.setState({modalVisible:true,modalType:'-1'})
+  },
+
+  //扫码成功后操作
+  readBarCode:function(code){
+    //如果是条码
+    if(code.type.indexOf('EAN_13') != -1 || code.type.indexOf('EAN-13') != -1){
+      //通过扫描到的isbn码获取图书信息
+      fetch('https://api.douban.com/v2/book/isbn/'+code.data+"?fields=id,title,images,summary,author,rating",
+            {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            method: 'get',
+        })
+        //这里不用转换，根据后台返回的值来定
+        .then((response) => response.json())
+        .then((json) => {
+          this.setState({
+            scanedBook:json,
+            modalType:'-2',
+          });
+        })
+        .catch((error) => {
+          Alert.alert(
+             '错误',
+             '获取书籍信息失败，请重试'
+            );
+          //最后关闭扫码框
+          this.setState({modalVisible:false,modalType:0});
+        });
+    }
+    else{
+      Alert.alert(
+        '注意',
+        '无法识别，请扫描书背面右下角的条码'
+      );
+      //最后关闭扫码框
+      this.setState({modalVisible:false,modalType:0});
+    }
+    
+  },
+
+  //添加到阅读计划中
+  // addScanToReadPlan:function(){
+  //   fetch(Constants.URL+'/read/book/addReadPlan',
+  //           {
+  //           headers: {
+  //             'Content-Type': 'application/json',
+  //           },
+  //           method: 'post',
+  //           body: JSON.stringify({
+  //               'sessionid':sessid,
+  //               'type':'ios',
+  //               'month':this.state.month,
+  //               'callData':this.state.scanedBook,
+  //           })
+  //       })
+  //       //这里不用转换，根据后台返回的值来定
+  //       .then((response) => response.json())
+  //       .then((json) => {
+  //         if(json.result === 'success'){
+  //           Alert.alert(
+  //            '成功',
+  //            '添加到阅读计划成功!'
+  //           );
+  //         }
+  //         else if(json.result === 'exist'){
+  //           AlertIOS.alert(
+  //            '失败',
+  //            '已经存在于阅读计划中!'
+  //            );
+  //          }
+  //          else if(json.result === 'expired'){
+  //               Alert.alert(
+  //                    '注意',
+  //                    '登录已过期，请重新登录'
+  //               );
+  //           }
+  //         })
+  //         .catch((error) => {
+  //           AlertIOS.alert(
+  //            '错误',
+  //            '添加阅读计划失败，请重试'
+  //           );
+  //   });
+  // },
+
+  //分享
+  onShare:function() {
+    Share.open({
+      share_text: "我在用这个读书管理软件！",
+      share_URL: "http://alaien-book.daoapp.io/", 
+      title: "分享",
+    },(e) => {
+      console.log(e);
+    });
+  },
+
+
   render: function() {
   //弹出框内容
     var modalView;
@@ -399,7 +504,7 @@ var ReadSearch = React.createClass({
 
             </View>
               <TouchableOpacity style={{backgroundColor:'#FFFFFF',width:60,height:60,borderRadius:30,alignItems:'center',
-                justifyContent:'center',bottom:10,left:screenWidth/2-30,position:'absolute'}} onPress={()=>{this.setState({modalVisible:false});}}>
+                justifyContent:'center',bottom:10,left:screenWidth/2-30,position:'absolute'}} onPress={()=>{this.setState({modalVisible:false,modalType:0});}}>
                 <Text>关闭</Text>
               </TouchableOpacity>
           </View>
@@ -429,10 +534,72 @@ var ReadSearch = React.createClass({
                 <Text style={{color:'#FFFFFF'}}>加入该月读书计划</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{backgroundColor:'#DDDDDD',width:60,height:60,borderRadius:30,alignItems:'center',
-                justifyContent:'center',bottom:10,left:screenWidth/2-30,position:'absolute'}} onPress={()=>{this.setState({modalVisible:false});}}>
+                justifyContent:'center',bottom:10,left:screenWidth/2-30,position:'absolute'}} onPress={()=>{this.setState({modalVisible:false,modalType:0});}}>
                 <Text>关闭</Text>
             </TouchableOpacity>
           </View>
+
+
+          //弹出的条码扫描框
+        else if(this.state.modalType === '-1'){
+
+          modalView = 
+          <View style={styles.camera}>
+            <View>
+                <Text style={{marginTop:-60,fontSize:20}}>请扫描书背后的条码</Text>
+            </View>
+            <BarcodeScanner
+                onBarCodeRead={(code) => {this.readBarCode(code)}}
+                style={{width:200,height:300}}>
+
+            </BarcodeScanner>
+            <TouchableOpacity style={{backgroundColor:'#888888',width:60,height:60,borderRadius:30,alignItems:'center',
+                justifyContent:'center',bottom:10,left:screenWidth/2-30,position:'absolute'}} onPress={()=>{this.setState({modalVisible:false,modalType:0});}}>
+                <Text style={{color:'#FFFFFF'}}>关闭</Text>
+              </TouchableOpacity>
+          </View>;
+        }
+
+        //扫描成功后的书籍展示框
+        else if(this.state.modalType === '-2'){
+
+          modalView = 
+          <View style={styles.slide0}>
+            <View style={{height: 100,flexDirection:'row',justifyContent:'flex-start',alignItems:'center',marginTop:20}}>
+              <Image style={{height:100,width:76}} source={{uri: this.state.scanedBook.images.large}}> 
+              </Image>
+              <View style={{flexDirection:'column',alignItems:'flex-start',justifyContent:'center',marginLeft:20}}>
+                <Text style={{width:screenWidth/2,fontSize:20,paddingBottom:6,flexWrap:'wrap'}}>{this.state.scanedBook.title}</Text> 
+                <Text style={{width:screenWidth/2,fontSize:12,paddingBottom:6,flexWrap:'wrap'}}>{this.state.scanedBook.author}</Text>
+                <Text style={{fontSize:10,}}>豆瓣评分:{this.state.scanedBook.rating.average}</Text>
+              </View>
+            </View>
+
+            <Picker style={{width:80,height:100}}
+                selectedValue={this.state.month}
+                onValueChange={(month) => this.setState({month: month})}>
+                {MONTHS_THIS_YEAR.map((month) => ( 
+                  <PickerItem
+                    key={month}
+                    value={month}
+                    label={month+'月'}
+                    />
+
+                ))}
+              </Picker>
+
+              <TouchableOpacity style={{backgroundColor:'rgba(45,188,20,0.8)',width:140,height:40,borderRadius:20,alignItems:'center',
+                  justifyContent:'center'}} onPress={()=>{this.addScanToReadPlan()}}>
+                  <Text style={{color:'#FFFFFF'}}>加入该月读书计划</Text>
+              </TouchableOpacity>
+
+
+            <TouchableOpacity style={{backgroundColor:'#888888',width:60,height:60,borderRadius:30,alignItems:'center',
+                justifyContent:'center',bottom:10,left:screenWidth/2-30,position:'absolute'}} onPress={()=>{this.setState({modalVisible:false,modalType:0});}}>
+                <Text style={{color:'#FFFFFF'}}>关闭</Text>
+              </TouchableOpacity>
+          </View>;
+        }
       }
     //弹出框
     var modal;
@@ -495,11 +662,11 @@ var ReadSearch = React.createClass({
         <View style={ styles.header }>
           
           <View style={styles.headerLeftMenu}>
-              {/*
-              <TouchableOpacity><Image style={styles.headerImg}
+
+              <TouchableOpacity onPress={()=>{this.openScan()}}><Image style={styles.headerImg}
                 source={require('../img/head_icon_scan.png')} resizeMode={'contain'}/>
               </TouchableOpacity>
-              */}
+
           </View>
 
 
@@ -511,7 +678,7 @@ var ReadSearch = React.createClass({
           </TouchableOpacity>
 
           <View style={styles.headerRightMenu}>
-              <TouchableOpacity onPress={this.props.openModalCallBack}><Image style={styles.headerImg}
+              <TouchableOpacity  onPress={()=>{this.onShare()}}><Image style={styles.headerImg}
                 source={require('../img/head_icon_share.png')} resizeMode={'contain'}/>
               </TouchableOpacity>
             </View>
@@ -586,7 +753,21 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     marginTop:20,
     marginLeft:6
-  }
+  },
+
+
+  camera: {
+    flex:1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.9)',
+  },
+  slide0: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,1)',
+  },
 });
 
 var customStyles = {

@@ -45,6 +45,13 @@ for(let i=month+1;i<=12;i++){
   MONTHS_THIS_YEAR.push(i.toString());
 }
 
+var headColors={
+  default:'rgba(219,188,86,0.8)',
+  tagPage:'rgba(119,188,86,0.8)',
+  commentPage:'rgba(197,86,86,0.8)',
+  sharePage:'rgba(111,88,67,0.8)',
+}
+
 var ReadMain = React.createClass({
 
   getInitialState:function(){
@@ -61,6 +68,8 @@ var ReadMain = React.createClass({
       readInfo:{},//点击选项卡后查询当前书籍的阅读信息 readHistory对象
       scanedBook:{},//扫码后获得的书籍信息
       month:(month+1).toString(),//选中的月份
+      text:'',//输入的字符，如书评等等
+      numText:'',//输入的数字，如书签等
     });
   },
 
@@ -305,6 +314,17 @@ var ReadMain = React.createClass({
       console.log(e);
     });
   },
+
+  //填写书签数字的时候调用
+  changeTagValue:function(text){
+    var re = /^[0-9]*[1-9][0-9]*$/ ;
+    //如果为正整数
+    if(re.test(text))
+      this.setState({numText:text})
+    //如果填写了别的东西，直接置空
+    else
+      this.setState({numText:''});
+  },
   
 
   render: function() {
@@ -383,6 +403,10 @@ var ReadMain = React.createClass({
     else if(this.state.menuId === '2'){
       modalView = 
         <View style={styles.slide2}>
+            <View style={styles.inputs} >
+              <TextInput style={{paddingLeft:20,height:100}}  placeholder={'书签页码'} keyboardType="numeric" textAlign={'center'} onChangeText={(text) => this.changeTagValue(text)} value={this.state.numText} autoFocus={true}> 
+              </TextInput>
+            </View>
             <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(119,188,86,0.8)',borderRadius:25}}>
               <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
                 source={require('../img/tag.png')} resizeMode={'contain'}/>
@@ -397,6 +421,12 @@ var ReadMain = React.createClass({
       else if(this.state.menuId === '3'){
       modalView = 
         <View style={styles.slide3}>
+            <View style={[styles.inputs,{height:(screenHeight-120)*2/3,width:screenWidth*5/6,borderRadius:10,fontSize:14,marginTop:40,paddingLeft:8,paddingTop:4}]} >
+              <TextInput style={{height:screenHeight}}
+                placeholder={'我对本书的看法'} multiline={true} keyboardType="default" textAlign={'left'} onChangeText={(text) => {this.setState({text:text});}} value={this.state.text} autoFocus={true}> 
+              </TextInput>
+            </View>
+
             <TouchableOpacity style={{flexDirection:'row',width:160,height:50,alignItems:'center',justifyContent:'center',backgroundColor:'rgba(197,86,86,0.8)',borderRadius:25}}>
               <Image style={{width:30,height:30,marginRight:10,tintColor:'#FFFFFF'}} 
                 source={require('../img/comment.png')} resizeMode={'contain'}/>
@@ -449,11 +479,11 @@ var ReadMain = React.createClass({
         modalView = 
         <View style={styles.slide0}>
           <View style={{height: 100,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-            <Image style={{height:100,width:76,marginLeft:screenWidth/2-70}} source={{uri: this.state.scanedBook.images.large}}> 
+            <Image style={{height:100,width:76,}} source={{uri: this.state.scanedBook.images.large}}> 
             </Image>
-            <View style={{flexDirection:'column',alignItems:'flex-start',justifyContent:'center',marginLeft:20}}>
-              <Text style={{width:screenWidth-120,fontSize:20,paddingBottom:6,flexWrap:'wrap'}}>{this.state.scanedBook.title}</Text> 
-              <Text style={{width:screenWidth-120,fontSize:12,paddingBottom:6,flexWrap:'wrap'}}>{this.state.scanedBook.author}</Text>
+            <View style={{flexDirection:'column',alignItems:'flex-start',justifyContent:'center',marginLeft:20,}}>
+              <Text style={{width:screenWidth/2,fontSize:20,paddingBottom:6,flexWrap:'wrap'}}>{this.state.scanedBook.title}</Text> 
+              <Text style={{width:screenWidth/2,fontSize:12,paddingBottom:6,flexWrap:'wrap'}}>{this.state.scanedBook.author}</Text>
               <Text style={{fontSize:10,}}>豆瓣评分:{this.state.scanedBook.rating.average}</Text>
             </View>
           </View>
@@ -634,7 +664,7 @@ var styles = StyleSheet.create({
   },
   slide3: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: 'rgba(250,128,114,1)',
   },
@@ -649,6 +679,16 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(255,105,180,1)',
+  },
+
+  inputs: {
+    height:50,
+    borderRadius:25,
+    width:200,
+    backgroundColor: 'rgba(255,255,255,0.6)',
+    marginBottom:20,
+    alignItems:'center',
+    justifyContent:'center'
   },
 
   camera: {

@@ -258,7 +258,7 @@ var ReadMain = React.createClass({
   },
 
   //添加扫码的书到阅读计划中
-  // addToReadPlan:function(){
+  // addScanToReadPlan:function(){
   //   fetch(Constants.URL+'/read/book/addReadPlan',
   //           {
   //           headers: {
@@ -479,7 +479,7 @@ var ReadMain = React.createClass({
             </PickerIOS>
 
             <TouchableOpacity style={{backgroundColor:'rgba(45,188,20,0.8)',width:140,height:40,borderRadius:20,alignItems:'center',
-                justifyContent:'center'}} onPress={()=>{this.addToReadPlan()}}>
+                justifyContent:'center'}} onPress={()=>{this.addScanToReadPlan()}}>
                 <Text style={{color:'#FFFFFF'}}>加入该月读书计划</Text>
             </TouchableOpacity>
 

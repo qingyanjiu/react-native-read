@@ -325,6 +325,76 @@ var ReadMain = React.createClass({
     else
       this.setState({numText:''});
   },
+
+  //开始读
+  startRead:function(){
+    fetch(Constants.URL+"/read/book/startRead",
+            {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            method: 'post',
+            body: JSON.stringify({
+                'sessionid':sessid,
+                'type':'ios',
+                'douban_id':this.state.bookPlan[this.state.bookIndex].douban_id,
+            })
+        })
+        //这里不用转换，根据后台返回的值来定
+        .then((response) => response.json())
+        .then((json) => {
+          var msg = '';
+          if(json.result === "success")
+            msg = '操作成功';
+          else if(json.result === 'notcomplete')
+            msg = '全书未毕读,不能启读';
+          AlertIOS.alert(
+             '提示',
+             msg
+          );
+        })
+        .catch((error) => {
+          AlertIOS.alert(
+             '错误',
+             '操作失败，请重试'
+            );
+    });
+  },
+
+  //结束阅读
+  completeRead:function(){
+    fetch(Constants.URL+"/read/book/completeRead",
+            {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            method: 'post',
+            body: JSON.stringify({
+                'sessionid':sessid,
+                'type':'ios',
+                'douban_id':this.state.bookPlan[this.state.bookIndex].douban_id,
+            })
+        })
+        //这里不用转换，根据后台返回的值来定
+        .then((response) => response.json())
+        .then((json) => {
+          var msg = '';
+          if(json.result === "success")
+            msg = '操作成功';
+          else if(json.result === 'notstart')
+            msg = '未启读,不能毕读';
+          AlertIOS.alert(
+             '提示',
+             msg
+          );
+        })
+        .catch((error) => {
+          AlertIOS.alert(
+             '错误',
+             '操作失败，请重试'
+            );
+    });
+  },
   
 
   render: function() {
@@ -339,7 +409,7 @@ var ReadMain = React.createClass({
             </Image>
             
             <View style={styles.imageButtonView}> 
-              <TouchableOpacity style={[styles.imageButton,{backgroundColor:'rgba(45,188,86,0.8)',}]}>
+              <TouchableOpacity style={[styles.imageButton,{backgroundColor:'rgba(45,188,86,0.8)',}]} onPress={()=>{this.startRead()}}>
                 <Text style={styles.text}>启读</Text>
               </TouchableOpacity>
 
@@ -351,7 +421,7 @@ var ReadMain = React.createClass({
                 <Text style={styles.text}>书评</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={[styles.imageButton,{backgroundColor:'rgba(19,188,167,0.8)',}]}>
+              <TouchableOpacity style={[styles.imageButton,{backgroundColor:'rgba(19,188,167,0.8)',}]} onPress={()=>{this.completeRead()}}>
                 <Text style={styles.text}>毕读</Text>
               </TouchableOpacity>
 

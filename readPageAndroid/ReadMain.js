@@ -421,7 +421,7 @@ var ReadMain = React.createClass({
       else if(this.state.menuId === '3'){
       modalView = 
         <View style={styles.slide3}>
-            <View style={[styles.inputs,{height:(screenHeight-120)*2/3,width:screenWidth*5/6,borderRadius:10,fontSize:14,marginTop:40,paddingLeft:8,paddingTop:4}]} >
+            <View style={[styles.inputs,{height:(screenHeight-120)*2/3,width:screenWidth*5/6,borderRadius:10,marginTop:40,paddingLeft:8,paddingTop:4}]} >
               <TextInput style={{height:screenHeight}}
                 placeholder={'我对本书的看法'} multiline={true} keyboardType="default" textAlign={'left'} onChangeText={(text) => {this.setState({text:text});}} value={this.state.text} autoFocus={true}> 
               </TextInput>

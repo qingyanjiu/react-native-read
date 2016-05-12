@@ -183,7 +183,7 @@ var ReadMain = React.createClass({
         if(json.result === 'expired'){
           Alert.alert(
                '注意',
-               '登录已过期，请重新登录'
+            '登录已过期，请重新登录'
           );
           //返回登录界面
           this.props.navigator.replace({

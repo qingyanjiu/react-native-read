@@ -345,7 +345,7 @@ var ReadMain = React.createClass({
         .then((json) => {
           var msg = '';
           if(json.result === "success")
-            msg = '操作成功';
+            msg = '启读操作成功';
           else if(json.result === 'notcomplete')
             msg = '全书未毕读,不能启读';
           AlertIOS.alert(
@@ -380,7 +380,7 @@ var ReadMain = React.createClass({
         .then((json) => {
           var msg = '';
           if(json.result === "success")
-            msg = '操作成功';
+            msg = '毕度操作成功';
           else if(json.result === 'notstart')
             msg = '未启读,不能毕读';
           AlertIOS.alert(

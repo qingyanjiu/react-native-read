@@ -16,6 +16,8 @@
     "react-native-share": "^1.0.9",
     "react-native-swiper": "^1.4.3",
     "react-tween-state": "^0.1.4",
-    "realm": "^0.11.1"
+    "realm": "^0.11.1",
+    "react": "^0.14.5",
+    "react-addons-perf": "^0.14.5"
   }
 }

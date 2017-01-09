@@ -512,7 +512,9 @@ var ReadSearch = React.createClass({
         else if(this.state.modalType === '2')
           modalView = 
           <View style={[styles.modal,{backgroundColor:'rgba(255,255,255,1)',justifyContent:'center'}]}>
-            <View style={{flexDirection:'row'}}>
+            <Image style={{height:150,width:115}} source={{uri: this.state.selectedBook.images.large}}>
+            </Image>
+            <View style={{flexDirection:'row',paddingTop:10}}>
               <Text style={{flex:1}}>《{this.state.bookName}》</Text>
             </View>
             

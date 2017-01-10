@@ -496,7 +496,7 @@ var ReadSearch = React.createClass({
         modalView = 
           <View style={styles.modal}>
             <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-              <TextInput style={styles.inputs} placeholder={'请输入书名'} textAlign={'center'} onChangeText={(text) => this.setState({text:text})} value={this.state.text} autoFocus={true}> 
+              <TextInput style={styles.inputs} placeholder={'请输入书名'} textAlign={'center'} onChangeText={(text) => this.setState({text:text})} value={this.state.text} autoFocus={true}>
               </TextInput>
 
               <TouchableOpacity style={styles.button} onPress={()=>{this.setState({searchText:this.state.text,modalVisible:false});}}>
@@ -615,17 +615,20 @@ var ReadSearch = React.createClass({
       </Modal>;
 
   var content;
-  if(this.state.searchText !== '')
+  //解决重新搜索后第一页内容不刷新的问题,只要输入新的搜索关键字,就重置页面
+  if(this.state.text !== this.state.searchText)
+    content = <View></View>
+  else if(this.state.searchText !== '')
     content = (
       <GiftedListView
           rowView={this._renderRowView}
           enableEmptySections={true}
-          
+
           onFetch={this._onFetch}
           initialListSize={10} // the maximum number of rows displayable without scrolling (height of the listview / height of row)
 
           firstLoader={true} // display a loader for the first fetching
-      
+
           pagination={true} // enable infinite scrolling using touch to load more
           paginationFetchigView={this._renderPaginationFetchigView}
           paginationAllLoadedView={this._renderPaginationAllLoadedView}
@@ -637,13 +640,13 @@ var ReadSearch = React.createClass({
           refreshableFetchingView={this._renderRefreshableFetchingView}
           refreshableWillRefreshView={this._renderRefreshableWillRefreshView}
           refreshableWaitingView={this._renderRefreshableWaitingView}
-          
+
           emptyView={this._renderEmptyView}
-          
+
           renderSeparator={this._renderSeparatorView}
-          
+
           withSections={false} // enable sections
-          
+
           PullToRefreshViewAndroidProps={{
             colors: ['#fff'],
             progressBackgroundColor: '#003e82',

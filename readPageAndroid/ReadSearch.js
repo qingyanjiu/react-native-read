@@ -616,7 +616,10 @@ var ReadSearch = React.createClass({
       </Modal>;
 
   var content;
-  if(this.state.searchText !== '')
+  //解决重新搜索后第一页内容不刷新的问题,只要输入新的搜索关键字,就重置页面
+  if(this.state.text !== this.state.searchText)
+    content = <View></View>
+  else if(this.state.searchText !== '')
     content = (
       <GiftedListView
           rowView={this._renderRowView}
